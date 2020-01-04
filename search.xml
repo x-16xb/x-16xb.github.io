@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>rop_link_exploits</title>
+      <link href="/2020/01/04/rop-link-exploits/"/>
+      <url>/2020/01/04/rop-link-exploits/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>pwn工具简介</title>
+      <link href="/2020/01/03/linux-exploits-tools/"/>
+      <url>/2020/01/03/linux-exploits-tools/</url>
+      
+        <content type="html"><![CDATA[<h2 id="pwntools"><a href="#pwntools" class="headerlink" title="pwntools"></a>pwntools</h2><p>pwntools是一个为CTF PWN题而开发的python库，可用来与本地目标或远程目标交互，生成符合编码的shellcode和payload，解析和搜寻elf文件，还有一个可以做内存泄漏的DynELF模块。<br>（1）基础信息返回函数、符号虚拟地址（也许不真实，可以用来求相对偏移），可访问ELF文件中如字典信息：<br><img src="linux-exploits-tools1.png" alt=""><br>例如下例代码可访问plt表中write函数地址：<br>    elf = ELF(‘stackoverflow’)<br>    plt_write =  elf.plt[‘write’]  </p><p>（2）可搜索字符串，返回的是生成器，例如下例代码返回libc.so.6文件字符串迭代器：<br>    libc = ELF(‘libc.so.6’)<br>    libc.search(‘/bin/sh’)   </p><p>（3）DynELF是pwntools中专门用来应对无libc情况的漏洞利用模块。<br><img src="linux-exploits-tools3.png" alt=""></p><h2 id="peda"><a href="#peda" class="headerlink" title="peda"></a>peda</h2><p>PEDA是为GDB设计的一个强大的插件，它扩展了gdb命令，提供额很多人性化的功能，比如高亮显示反汇编代码、寄存器、内存信息，提高了debug的效率。  </p><ol><li>安装：<br> git clone <a href="https://github.com/longld/peda.git" target="_blank" rel="noopener">https://github.com/longld/peda.git</a> ./peda<br> echo “source ./peda/peda.py” &gt;&gt; ~/.gdbinit</li></ol><ol><li><p>使用 </p><ul><li>vmmap查看内存映射<br><img src="linux-exploits-tools6.png" alt=""></li><li><p>checksec<br>查看目标程序的漏洞利用缓解措施 </p></li><li><p>pattern<br>生成字符串模板 写入内存 用于定位溢出点</p></li><li><p>searchmem pattern start end<br>查找libc库里的 “\bin\sh”<br><img src="linux-exploits-tools7.png" alt=""></p></li><li><p>查找gadgets<br><img src="linux-exploits-tools8.png" alt=""></p></li></ul></li></ol><h2 id="ROPgadget"><a href="#ROPgadget" class="headerlink" title="ROPgadget"></a>ROPgadget</h2><p>1.peda的rop搜索到的rop gadgets较少，该专业工具可识别更多的gadget。<br><img src="linux-exploits-tools9.png" alt="">  </p><h2 id="pwndbg"><a href="#pwndbg" class="headerlink" title="pwndbg"></a>pwndbg</h2><p>待更新…</p><h2 id="作者声明"><a href="#作者声明" class="headerlink" title="作者声明"></a><strong>作者声明</strong></h2><pre><code>本文版权归作者所有，旨在技术交流使用。未经作者同意禁止转载，转载后需在文章页面明显位置给出原文连接，否则相关责任自行承担。</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 漏洞 </tag>
+            
+            <tag> ctf </tag>
+            
+            <tag> writeup </tag>
+            
+            <tag> exploits </tag>
+            
+            <tag> tools </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>漏洞利用缓解措施</title>
+      <link href="/2020/01/03/linux-exploits-ease-methods/"/>
+      <url>/2020/01/03/linux-exploits-ease-methods/</url>
+      
+        <content type="html"><![CDATA[<h2 id="操作系统安全防护"><a href="#操作系统安全防护" class="headerlink" title="操作系统安全防护"></a>操作系统安全防护</h2><ol><li><p>ASLR<br>ASLR(Address space layout randomization，地址空间布局随机化)通过随机放置数据区域的地址空间来防止攻击者跳转到内存的特定位置。在windows上ASLR主要包括堆栈随机化、PEB与TEB随机化、映像随机化，windows系统上虽然xp时代就提出来了，但是从vista开始ASLR才真正发挥作用。在linux上ASLR主要包括栈地址随机化、LIBS/MMAP随机化、EXEC随机化、BRK随机化、VDSO随机化。在没有ASLR的情况下让程序跳转到一个已经存在的系统函数的漏洞利用方式被称为ret2libc。  </p><ul><li>栈地址随机化:2.6.15内核开始支持。</li><li>2LIBS/MMAP随机化:程序每次执行动态库都被加载到不同的内存位置。2.6.15内核开始支持。</li><li>EXEC随机化:程序每次执行都将加载到不同的内存位置。可以这么理解，LIBS/MMAP随机化相当于windows中dll的随机化，而EXEC随机化相当于windows中exe的随机化。</li><li>BRK随机化:linux系统中brk和mmap这两个系统调用用来分配内存。当brk ASLR关闭的时候，start_brk和brk都是指向bss段的尾部的；当brk ASLR开启的时候，start_brk和brk初始位置是bss段的尾部加一个随机的偏移。2.6.26内核开始支持。</li></ul></li><li><p>DEP 堆栈不可执行</p></li></ol><h2 id="编译器安全防护"><a href="#编译器安全防护" class="headerlink" title="编译器安全防护"></a>编译器安全防护</h2><ol><li><p>Built as PIE<br>前面说了EXEC的随机化，实际上更准确的说法是PIE(Position Independent Executables，位置无关可执行文件)。PIE只有在系统开启ASLR和编译时开启-fpie -pie选项这两个条件同时满足时才会生效。最初因为在像x86这样通用寄存器较少的架构上PIE的性能损失比较明显，所以并不是所有的程序都启用了PIE。从Ubuntu 17.10和Fedora 23开始为所有的架构都启用了PIE。</p></li><li><p>Built with RELRO<br>RELRO(RELocation Read-Only，只读重定位)让加载器将重定位表中加载时解析的符号标记为只读，这减少了GOT覆写攻击的面积。RELRO可以分为Partial RELRO(部分RELRO)和Full RELRO(完整RELRO)。开启Partial RELRO的话GOT表是可写的；开启FULL RELRO的话GOT表是只读的。从Fedora 23开始所有软件包都已启用了Full RELRO。开启-Wl,-z,relro选项即可开启Partial RELRO；开启-Wl,-z,relro,-z,now选项即可开启Full RELRO。</p></li><li><p>Stack Protector<br>Stack Protector又名canary，stack cookie……等等，类似于VS编译器中的GS。gcc4.2中添加了-fstack-protector和-fstack-protector-all编译参数以支持该功能，gcc4.9中添加了-fstack-protector-strong编译参数让保护的范围更广。 </p></li></ol><h2 id="新型防护技术"><a href="#新型防护技术" class="headerlink" title="新型防护技术"></a>新型防护技术</h2><p>PAC</p><p>PXN</p><p>CET</p><p>CFI</p><p>SMEP</p><p>SMAP</p><p>MTE</p><h2 id="作者声明"><a href="#作者声明" class="headerlink" title="作者声明"></a><strong>作者声明</strong></h2><pre><code>本文版权归作者所有，旨在技术交流使用。未经作者同意禁止转载，转载后需在文章页面明显位置给出原文连接，否则相关责任自行承担。</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 漏洞 </tag>
+            
+            <tag> ctf </tag>
+            
+            <tag> writeup </tag>
+            
+            <tag> exploits </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>linux漏洞利用思路</title>
+      <link href="/2020/01/03/linux-exploits-ideas/"/>
+      <url>/2020/01/03/linux-exploits-ideas/</url>
+      
+        <content type="html"><![CDATA[<h2 id="栈溢出-rop链"><a href="#栈溢出-rop链" class="headerlink" title="栈溢出-rop链"></a>栈溢出-rop链</h2><p>待更新…</p><h2 id="堆漏洞利用"><a href="#堆漏洞利用" class="headerlink" title="堆漏洞利用"></a>堆漏洞利用</h2><ol><li><p><strong>普通溢出</strong>：溢出多个字节，覆盖下一个chunk结构，造成unlink<br>first chunk溢出覆盖second chunk的size、fd、bk，将size覆盖为0；释放first chunk时，ptmalloc会通过second chunk的尾部（通过second chunk size字段寻址）定位到second chunk下一个chunk的presize字段；通过second下一个chunk的prevsize判断second是否为空闲chunk，由于此时定位的prevsize即是被覆盖为0的second chunk size，因此ptmalloc判断second chunk为空闲，由此发生向前合并，并发生second chunk的unlink。</p></li><li><p><strong>off by one</strong>：伪造chunk，溢出prevsize和size，造成unlink<br>在first chunk中伪造一个fake chunk，并溢出覆盖second chunk size的PREV_IN_USE flag 为0，将prevsize改为伪造的size；那么释放掉second chunk时，就会发生向后合并，并发生fake chunk的unlink。</p></li><li><p><strong>off by one</strong>：溢出prevsize为较大值，修改size的PREV_IN_USE，伪造向后合并的pre chunk size（house of einherjar，由 Hiroki Matsukuma 提出）<br>把seconde chunk的 size 位的 PREV_IN_USE flag 改为0，prev_size 改为一个自己想要的值，free 掉第二个 chunk 的时候就会连带着把前面的一大片空间（自己伪造的 prev_size）给 unlink 掉（伪造合适的 fd 和 bk 来绕过 unlink 的 check！），然后合并成一块更大的 chunk，放入 bin 里面，下一次 malloc 的时候就能 malloc 到那块空间，然后就能覆盖那块空间上原有的内容（数组指针、函数指针等等）。</p></li><li><p><strong>double free思路</strong>：第一次free一个chunk后，得到一个野指针指向堆的空闲内存区域；申请内存覆盖该区域，伪造两个连续的chunk，第二个chunk以野指针为chunk的起始地址；第二次释放该chunk，造成两个伪造chunk的向后合并，造成第一个fake chunk的unlink。（unlink加入一个检测double free的机制：如果该chunk块的下一个chunk size的PREV_IN_USE flag 为0，那释放该chunk会引发异常，如下图）<br><img src="linux-exploits-ideas.png" alt="">  </p></li><li><strong>UAF思路</strong>：释放一个chunk后没有将指针置NULL（存在野指针），导致后面有机会可以向该内存写入数据；假如后面申请内存的chunk head在野指针控制范围内，可以修改chunk的head，使释放时发生unlink。  </li><li><p><strong>fastbins思路</strong>（chunk属于fastbins管理，利用需存在堆漏洞，fastbins无unlink时对双向链表的检查）  </p><ul><li><p>Double free造成任意内存指针分配：<br>a.假如fastbins上存在2个chunk，fastbins链表结构为：fastbins[i]-&gt;  chunk2 -&gt; chunk1（最近释放的chunk指针放在fastbins中管理）；<br>b.再次释放chunk1（double free），那么chunk1的指针被写入fastbins[i]，chunk1的fd也指向chunk2，链表结构为：fastbins[i]-&gt;  chunk1 -&gt;  chunk2 -&gt; chunk1；<br>c.如果此时malloc掉chunk1，然后伪造fd指针到fake chunk，再malooc掉chunk2，chunk1，那么fake chunk的指针会被写到fastbins;d.再次malloc将会分配该块地址（fake chunk，可以是任意空间）。</p></li><li><p>House of Spirit：<br>覆盖一个fast chunk的fd，使其指向可控的区域，只要构造好数据，释放后系统会错误的将该区域作为空闲chunk放到相应的fast bin里面，最后再分配出来的时候，就可能将目标区域分配给用户。</p><font size=2 color="FF0000">注：fastbins使用单项链表管理空闲chunk，只是用fd指针；fastbins数组中存放的是链表尾指针；每当malloc时，返回fastbins数组里chunk指针，更新为返回chunk的fd；每次free一个fast chunk时，chunk放到链表尾（fd指向当前chunk链表最后一个chunk），更新fastbins数组chunk链表尾指针。</font></li></ul></li><li><p>Topchunk （House Of Force）<br>a.覆写top chunk的size为一个较大值（可以是(unsigned long) -1)），这样可以绕过是否大于用户申请大小的检查；b.申请一个chunk，可以使top chunk切分后，更新的top chunk指针指向目标区域；再次申请时就可以申请到目标区域。</p></li></ol><ol><li><p>任意地址free漏洞<br>free一片可控地址空间，在该地址空间伪造chunk，使释放时发生unlink。</p></li><li><p>unlink的注意事项：<br>由于glibc增加了unlink的校验，目前只能导致一次固定地址写，<font color="FF0000">伪造 fd 和 bk 的时候需要某个地址存放有有指向该 chunk 的指针</font>，而且这个地址不会因为 ASLR 随机化并且是可写的，满足这两个条件的话一般来说只有 binary 的 bss 段了。如果在堆上的话那么就需要首先 leak 堆地址，其他同理。</p></li></ol><h2 id="内核漏洞利用"><a href="#内核漏洞利用" class="headerlink" title="内核漏洞利用"></a>内核漏洞利用</h2><p>待更新…</p><h2 id="作者声明"><a href="#作者声明" class="headerlink" title="作者声明"></a><strong>作者声明</strong></h2><pre><code>本文版权归作者所有，旨在技术交流使用。未经作者同意禁止转载，转载后需在文章页面明显位置给出原文连接，否则相关责任自行承担。</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 漏洞 </tag>
+            
+            <tag> ctf </tag>
+            
+            <tag> writeup </tag>
+            
+            <tag> exploits </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>ELF符号延迟绑定（动态符号的加载）</title>
+      <link href="/2020/01/03/elf-symbol-delay-bind/"/>
+      <url>/2020/01/03/elf-symbol-delay-bind/</url>
+      
+        <content type="html"><![CDATA[<h2 id="过程总结"><a href="#过程总结" class="headerlink" title="过程总结"></a>过程总结</h2><p><strong>首次调用会跳到动态符号的.plt表项的首条指令；该指令会跳转到该符号的.got表项地址，初始时该处存放的是.plt表项的第二条指令；.plt第二条指令会压入该符号的表项号，然后跳入.plt首地址；.plt首地址将got表中的第二项压入栈中（即本模块对应的ID），然后跳转到got表项的第三项执行（ _dl_runtime_resolve函数）； _dl_runtime_resolve函数执行完后，对应的.got表项里就有符号的真实地址；再次调用就可以通过.plt表项的首条指令直接跳到符号真实地址（.got表中解析后的结果）。</strong></p><h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><ol><li><p>首次调用libc.so的函数，会跳到对应的plt表项的首条指令<br><img src="elf_symbol_delay_bind1.png" alt=""></p></li><li><p>plt首条指令是跳转到.got表里对应的表项<br><img src="elf_symbol_delay_bind2.png" alt=""></p></li><li>got表中有6项，第四项为read<br><img src="elf_symbol_delay_bind3.png" alt=""></li><li>查看此时 read表项值，其对应着read plt表项中的第二条指令<br><img src="elf_symbol_delay_bind4.png" alt=""><ul><li>got表中第一项对应代码的_DYNAMIC节，这个节里保存着动态链接器所需要的信息：比如依赖于哪些共享库、动态符号表位置、初始化代码位置等。<br><img src="elf_symbol_delay_bind5.png" alt=""></li><li>第二项对应本模块的ID</li><li>第三项对应，动态链接库的 _dl_runtime_resolve函数<br><img src="elf_symbol_delay_bind6.png" alt="">       </li></ul></li><li>再回头看看plt表项中的第二条指令，它会压入 read函数对应的got表项序号（去掉前3项），然后跳转到plt表的首段0x080482F0<br><img src="elf_symbol_delay_bind7.png" alt="">   </li><li>plt首地址的代码 将got表中的第二项压入栈中（即本模块对应的ID），然后跳转到got表项的第三项执行（ _dl_runtime_resolve函数）<br><img src="elf_symbol_delay_bind8.png" alt="">  </li><li><p>经过 _dl_runtime_resolve函数解析完，got表中就添入了read函数真实地址<br><img src="elf_symbol_delay_bind9.png" alt="">  </p></li><li><p>查看该地址处符号，为read<br><img src="elf_symbol_delay_bind10.png" alt="">  </p></li><li>反汇编该处指令<br><img src="elf_symbol_delay_bind11.png" alt=""></li></ol><h2 id="作者声明"><a href="#作者声明" class="headerlink" title="作者声明"></a><strong>作者声明</strong></h2><pre><code>本文版权归作者所有，旨在技术交流使用。未经作者同意禁止转载，转载后需在文章页面明显位置给出原文连接，否则相关责任自行承担。</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> ELF </tag>
+            
+            <tag> 延迟绑定 </tag>
+            
+            <tag> 符号加载 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Glibc堆内存管理知识梳理</title>
+      <link href="/2020/01/03/ptmalloc2/"/>
+      <url>/2020/01/03/ptmalloc2/</url>
+      
+        <content type="html"><![CDATA[<h2 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h2><p>在读了<a href="https://paper.seebug.org/papers/Archive/refs/heap/glibc%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86ptmalloc%E6%BA%90%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90.pdf" target="_blank" rel="noopener">Ptmalloc2源代码分析</a>和阿里牛人文章<a href="https://yq.aliyun.com/articles/53850?spm=a2c4e.11153940.blogcont6274.13.57fc1dc2Pm9J3W" target="_blank" rel="noopener">Linux堆内存管理深入分析</a>后，本文以一种 <font color="#FF0000">有序的知识点摘要</font>形式重新梳理下堆内存管理知识，希望可以将堆内存管理知识点进行概括、总结、串联，本文适合对堆内存管理有一定零星了解，通过本文将知识点串起来。</p><h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><ol><li><p>当前针对各大平台主要有如下几种堆内存管理机制：</p><ul><li>dlmalloc – General purpose allocator</li><li><font color="#FF0000" face = "微软雅黑" size=3>ptmalloc2 – glibc </font></li><li>jemalloc – FreeBSD, Firefox, Android5.0-</li><li>tcmalloc – Google</li><li>libumem – Solaris <p align="left">堆内存管理的核心目的是能够高效地分配和回收内存块(chunk)。</p></li></ul></li><li><p>首次malloc申请内存（小于128k，大内存由mmap系统函数直接分配），查看进程maps文件可看出分配了132kb的堆内存（使用brk申请），这132KB的堆空间叫做arena，主线程分配的叫做main arena。</p></li><li><p><strong>不是每次malloc申请内存都会用系统调用来映射内存，而是初次申请便映射一大块内存交由arena管理，由arena进行内存分配和回收。</strong>在主线程调用free之后：从内存布局可以看出程序的堆空间并没有被释放掉，而是由glibc的ptmalloc2使用arena结构进行管理。  </p></li><li><p>主线程和子线程有自己独立的arena，新线程会通过nmap分配一个新的arena，但arena数量有限制：<br>  &emsp;<em>For 32 bit systems:   Number of arena = 2 </em> number of cores + 1.<br>  &emsp;For 64 bit systems:   Number of arena = 8 <em> number of cores + 1.</em><br>当glibc能维护的arena个数已经达到上限，无法再为新线程分配新的arena，那么复用已存在的arena（遍历可用arena，lock成功后返回给线程，暂时无可用的会阻塞malloc操作直到可用）</p></li><li><p>main arena被分配的内存空间是连续的，当管理的空闲内存不够分配时，通过系统调用sbrk扩展heap，<strong>堆空间是向上增长的</strong>，sbrk只需将arena管理的最高地址增加即可；而thread arena管理的内存区域可能不连续，初始化时或每次空间不够时，都是系统使用mmap分配一块内存，为了让这些分离的堆块方便管理，ptmalloc2在使用_heap_info数据结构将其联系起来。</p></li><li><p>在ptmalloc2中，chunk是堆内存管理单元，有4种类型，除了按是否空闲分为allocated chunk和malloc_chunk，还有两个特殊类型的chunk：top chunk和Last remainder chunk，其中：</p><ul><li>Top Chunk<br>当一个chunk处于一个arena的最顶部(即最高内存地址处)的时候，就称之为top chunk。在系统当前的所有空闲chunk都无法满足用户请求的内存大小的时候，将此chunk当做一个应急消防员，分配给用户使用。如果top chunk的大小比用户请求的大小要大的话，就将该top chunk分作两部分：1）用户请求的chunk；2）剩余的部分成为新的top chunk。否则，就需要扩展heap或分配新的heap了，在main arena中通过sbrk扩展heap，而在thread arena中通过mmap分配新的heap。</li><li>Last Remainder Chunk<br>Last remainder是另外一种特殊的chunk，当需要分配一个small chunk，但找不到合适的chunk，如果last remainder chunk的大小大于所需的small chunk大小，last remainder chunk被分裂成两个chunk，其中一个chunk返回给用户，另一个chunk变成新的last remainder chuk。  </li></ul></li><li><p>到此为止，已经了解了arena、heaps、chunk的概念，现在可以通过两张图理解清楚它们之间的联系(<font size=2><strong>图引自阿里云栖社区文章<a href="https://yq.aliyun.com/articles/53850?spm=a2c4e.11153940.blogcont6274.13.57fc1dc2Pm9J3W" target="_blank" rel="noopener">《Linux堆内存管理深入分析》</a></strong></font>)：</p><ul><li><p><strong>main_arena</strong><br><img src="ptmalloc2_main_arena.png" alt="&quot;main arena&quot;"></p><center> <font size=2 face="黑体">图1：main arena内存布局</font></center>  <ul><li>左上角是arana数据结构，右侧是被arena管理的一片连续的内存块；  </li><li>可以看出内存块被割裂成3种chunk：top chunk，空闲chunk(即malloc_chunk，为malloc机制主要管理的chunk)，和以分配chunk(allocted chunk)，<strong>Last remainder属于特殊的空闲chunk，是分配samall chunk时产生的剩余，其空间中的位置会随时变化</strong>；</li><li>top chunk在arena管理内存空间的最高地址，在内存不够时，可以直接向上扩展。因此，main arena中不存在heaps；</li><li>arena的主要业务就是组织管理空闲chunk，回收已分配的chunk，并在合适的时机合并被隔离成碎片的空闲chunk;     </li></ul></li><li><p><strong>thread arena</strong><br><img src="ptmalloc2_thread_arena.png" alt="&quot;thread arena&quot;"><br><center> <font size=2 face="黑体">图2：thread arena内存布局</font></center></p><ul><li>这是一个包含2个heap的thread arena，heap的起始地址处是heap_info数据结构，用来连接多个heap；</li><li>线程arena数据结构在第一个heap中，增加新的heap会改变arena数据结构中top chunk的指向（新分配的heap地址更高）；</li><li>另外，main arena数据结构是存放在libc.so的可写数据段中。   </li></ul></li></ul></li></ol><h2 id="数据结构：chunk、bin及arena"><a href="#数据结构：chunk、bin及arena" class="headerlink" title="数据结构：chunk、bin及arena"></a>数据结构：chunk、bin及arena</h2><ol><li><p>堆内存管理单元chunk<strong>设计为方便分配和回收的数据结构</strong>，ptmalloc2将整个堆内存空间分成了连续的、大小不一的chunk（大小必须为8的倍数），下图为chunk基础数据结构：<br><img src="ptmalloc_freechunk.png" alt="&quot;chunk format&quot;">   </p><center><font size=2 face="黑体">图3：chunk的数据结构</font></center>  <ul><li><strong>pre chunk size</strong><br>前一个chunk的大小。只有在前一个chunk是空闲时才有用，在ptmalloc2做内存管理时索引前一个空闲chunk的地址（前一个chunk是空闲，<font color="#FF0000">如果当前chunk被释放时，会需要前一个空闲chunk的地址去完成两个连续空闲chunk的合并</font>）；前一个chunk被分配时，可以做前一个chunk的用户空间。 </li><li><strong>chunk size</strong><br>当前chunk大小，包括给malloc调用者使用的空间和做内存管理的消耗空间，大小是8字节对齐，所以后3位可以作其它用。 </li><li><strong>N/M/P标志位</strong><br>N (NON_MAIN_ARENA)：表示当前chunk是否是thread arena。<br>M (IS_MMAPPED)：表示当前chunk是否是通过mmap系统调用产生的。<br>P (PREV_INUSE): 表示前一个chunk是否为allocated。</li><li><p><strong>fd和bk</strong><br>chunk空闲时会有，分别表示chunk双向链表的前向指针和后项指针。   </p><p><strong>空闲chunk的数据结构定义：</strong><br>struct malloc_chunk {<br>INTERNAL_SIZE_T      prev_size;  /<em> Size of previous chunk (if free).  </em>/<br>INTERNAL_SIZE_T      size;       /<em> Size in bytes, including overhead. </em>/<br>// 这两个指针只在free chunk中存在<br> struct malloc_chunk<em> fd;<br> struct malloc_chunk</em> bk;<br>// 这两个指针只在large chunk中存在<br> struct malloc_chunk<em> fd_nextsize;<br>struct malloc_chunk</em> bk_nextsize;<br>};<br> <strong>通过大小去检索和操作前后chunk称为隐式链表技术。</strong></p></li></ul></li><li>组织空闲chunk的双向链表bin<br><font color="#FF0000">ptmalloc2最核心的目的</font>是管理空闲的chunk，已分配的chunk不做管理，主要业务是<font color="#FF0000">为malloc调用者提供最合适的空闲chunk，回收free后的chunk</font>，因此设计了<strong>4种链表数组</strong>（数组元素存放chunk类型的链表指针）来满足用户对chunk不同大小的请求，这个链表数组被称为bins，每个数组元素为一个bin，每种不同的bins管理不同类型chunk，分别为：<ul><li>Fast bins：用如其名，是最快的分配方式，数量为10个bin，chunk size分别为16到80字节；</li><li>Unsorted bin： 暂不作分类的chunk都放在该bin下，数量为1个；</li><li>Small bins: 小于512个字节时，分配该类bin下chunk，62个；</li><li>Large bins: 大于512字节时。分配该类bin下的chunk，63个。<br>&lt;/br&gt;      </li></ul></li><li><p>管理空闲chunk的arena结构<br> struct malloc_state<br> {<br>   mutex_t mutex;  /<em> Serialize access.  </em>/</p><p>   int flags;   /<em> Flags (formerly in max_fast).  </em>/</p><p>   <font color="#FF0000">mfastbinptr fastbinsY[NFASTBINS];</font>  /<em> Fastbins </em>/</p><p>   <font color="#FF0000">mchunkptr top;</font> /<em> Base of the topmost chunk — not otherwise kept in a bin </em>/</p><p>   <font color="#FF0000">mchunkptr last_remainder;</font> /<em> The remainder from the most recent split of a small request </em>/</p><p>   <font color="#FF0000">mchunkptr bins[NBINS * 2 - 2];</font>  /<em> Normal bins packed as described above </em>/</p><p>   unsigned int binmap[BINMAPSIZE];  /<em> Bitmap of bins </em>/</p><p>   struct malloc_state <em>next;  /</em> Linked list */</p><p>   struct malloc_state <em>next_free;   /</em> Linked list for free arenas.  */</p><p>   INTERNAL_SIZE_T system_mem;   /<em> Memory allocated from the system in this arena.  </em>/</p><p>   INTERNAL_SIZE_T max_system_mem;</p><p> };  </p><ul><li>arena管理内存的数据结构为malloc state；</li><li>fastbinsY即为上文提到的fastbins，里面存放的是可用来快速分配的小chunk；</li><li>top指向top chunk，top chunk是一种特殊的空闲chunk，也用来分配内存；</li><li>last_remainder和top chunk一样；</li><li>bins保存了usorted bin，samall bins, large bins，其中    bins[0]为unsorted bin，<br>bin[1:63]为small bin,bins[63:127]为large bin。</li></ul></li></ol><h2 id="堆块的分配、释放与合并"><a href="#堆块的分配、释放与合并" class="headerlink" title="堆块的分配、释放与合并"></a>堆块的分配、释放与合并</h2><h3 id="堆块的分配"><a href="#堆块的分配" class="headerlink" title="堆块的分配"></a>堆块的分配</h3><ol><li>首先将用户请求大小转化为实际需要分配的堆块大小，加上chunk结构中presize和size大小；</li><li>如果chunk_size &lt;= max_fast（默认64B），则尝试在fastbins中取所需大小的chunk返回，分配结束；（优先分配fastbins）</li><li>如果2不满足，如果chunk_size &lt;= 521B（smallbins范围），则尝试在smallbins中取所需大小的chunk返回，分配结束(是否会切分较大的smallbin，将剩余部分放到unsorted bin，last remainder chunk指向剩余的chunk。)；</li><li>如果fastbins和smallbins都不满足，则首先合并fastbins，将合并后的chunk链入unsorted bin；然后遍历unsorted bin，如果满足：a.只有一个chunk;b.该chunk在上次分配被使用过；c.chunk大小属于small范围;d.chunk大于所需分配大小，则切分该chunk，分配结束，否则遍历unsorted bin将chunk放到对应的samll和large bins；<br><img src="ptmalloc2_chunk_judge.png" alt="ptmalloc2_chunk_judge">   </li><li>到了这一步，fastbins、smallbins、unsortedbin都无合适的chunk分配，其中fastbins、unsortedbi已被清空。这时需从large bins中分配，从large bins中按照“smallest-first，best-fit”原则，找一个合适的 chunk，从中划分一块所需大小的chunk，并将剩下的部分链接回到bins中；</li><li>如果搜索fast bins和bins都没有找到合适的chunk，那么就需要操作top chunk来进行分配了。判断top chunk大小是否满足所需chunk的大小，如果是，则从top chunk中分出一块来。否则转到下一步。</li><li>到了这一步，说明top chunk也不能满足分配要求，所以，于是就有了两个选择: 如果是主分配区，调用sbrk()，增加top chunk大小；如果是非主分配区，调用mmap来分配一个新的sub-heap，增加top chunk大小；或者使用mmap()来直接分配。在这里，需要依靠chunk的大小来决定到底使用哪种方法。判断所需分配的chunk大小是否大于等于 mmap分配阈值，如果是的话，则转下一步，调用mmap分配，否则跳到第12步，增加top chunk 的大小。 </li></ol><h3 id="堆块的释放"><a href="#堆块的释放" class="headerlink" title="堆块的释放"></a>堆块的释放</h3><ol><li>free() 函数接受一个指向分配区域的指针作为参数，释放该指针所指向的chunk。</li><li>判断传入的指针是否为0，如果为0，则什么都不做，直接return。否则转下一步。</li><li>判断所需释放的chunk是否为mmaped chunk，如果是，则调用munmap()释放mmaped chunk，解除内存空间映射，该该空间不再有效。如果开启了mmap分配阈值的动态调整机制，并且当前回收的chunk大小大于mmap分配阈值，将mmap分配阈值设置为该chunk的大小，将mmap收缩阈值设定为mmap分配阈值的2倍，释放完成，否则跳到下一步。</li><li>判断chunk的大小和所处的位置，若chunk_size &lt;= max_fast，并且chunk并不位于heap的顶部，也就是说并不与top chunk相邻，则将chunk放到fast bins中，chunk放入到fast bins中时，并不修改该chunk使用状态位P。也不与相邻的chunk进行合并。只是放进去，如此而已。这一步做完之后释放便结束了，程序从free()函数中返回。（因为与top chunk相邻的小chunk也和 top chunk进行合并，所以这里不仅需要判断大小，还需要判断相邻情况）</li><li>判断前一个chunk是否处在使用中，如果前一个块也是空闲块，则合并。</li><li>判断当前释放chunk的下一个块是否为top chunk（相较于当前chunk的高地址方向）（top chunk从低地址开始划分，向高地址扩展），如果是，与top chunk合并，并更新top chunk的大小等信息。</li><li>如下一个不是top chunk，判断下一个chunk是否处在使用中，如果下一个chunk也是空闲的，则合并，并将合并后的chunk放到unsorted bin中；</li><li>判断合并后的chunk 的大小是否大于FASTBIN_CONSOLIDATION_THRESHOLD（默认64KB），如果是的话，则会触发进行fast bins的合并操作，fast bins中的chunk将被遍历，并与相邻的空闲chunk进行合并，合并后的chunk会被放到unsorted bin中。fast bins将变为空，操作完成之后转下一步。</li><li>判断top chunk的大小是否大于mmap收缩阈值（默认为128KB），如果是的话，对于主分配区，则会试图归还top chunk中的一部分给操作系统。但是最先分配的128KB空间是不会归还的，ptmalloc 会一直管理这部分内存，用于响应用户的分配请求；如果为非主分配区，会进行sub-heap收缩，将top chunk的一部分返回给操作系统，如果top chunk为整个sub-heap，会把整个sub-heap还回给操作系统。  </li></ol><h3 id="堆块的合并"><a href="#堆块的合并" class="headerlink" title="堆块的合并"></a>堆块的合并</h3><ol><li>堆块释放时，会判断当前 chunk 的相邻 chunk 是否为空闲状态，若是则会进行堆合并。合并时会将空闲 chunk 从 bin 中 unlink，并将合并后的 chunk 添加到 unsorted bin 中。堆合并分为向前合并和向后合并。  </li><li>向后合并：  <ul><li>判断当前chunk的P(PREV_INUSE)标志位是否为0（0代表前一个chunk状态是free）；</li><li>前一个chunk若为空闲，则将当前chunk指向前一个，更新chunk size，释放前一个chunk；</li><li>更新合并后的chunk到bin中。</li></ul></li><li>向前合并：<ul><li>通过next-&gt;next-&gt;prev_inuse判断next chunk是否为空闲；</li><li>若为空闲，则更新合并后chunk大小，unlink next chunk；</li><li>更新合并后的chunk到bin中。</li></ul></li><li><p>unlink：  </p><ul><li>dlmlloc或ptmalloc2中定义unlink如下：<br>/<em> Take a chunk off a bin list </em>/<br>#define unlink(P, BK, FD) {<br>FD = P-&gt;fd;<br>BK = P-&gt;bk;<br>FD-&gt;bk = BK;<br>BK-&gt;fd = FD;<br>}  </li><li>Glibc 增加了安全检查：<br>/<em> Take a chunk off a bin list </em>/<br>#define unlink(P, BK, FD) {<br>FD = P-&gt;fd;<br>BK = P-&gt;bk;<br>if (__builtin_expect (FD-&gt;bk != P || BK-&gt;fd != P, 0))<br>malloc_printerr (check_action, “corrupted double-linked list”, P);<br>else {<br>FD-&gt;bk = BK;<br>BK-&gt;fd = FD;        …<br>}<br>}  </li></ul><p><strong>bin链中该chunk的前chunk的bk和后chunk的fd都应该指向P，最后unlink被改写的也只能是存放P指针的前chunk-&gt;bk与后chunk-&gt;fd。</strong> </p></li></ol><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://yq.aliyun.com/articles/53850?spm=a2c4e.11153940.blogcont6274.13.57fc1dc2Pm9J3W" target="_blank" rel="noopener">Linux堆内存管理深入分析 (上)</a><br><a href="https://yq.aliyun.com/articles/53852?spm=a2c4e.11153940.0.0.6fe7644bYxaIT1" target="_blank" rel="noopener">Linux堆内存管理深入分析 (下)</a><br><a href="https://paper.seebug.org/papers/Archive/refs/heap/glibc%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86ptmalloc%E6%BA%90%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90.pdf" target="_blank" rel="noopener">Glibc内存管理 Ptmalloc2源代码分析 庄明强</a>  </p><h2 id="作者声明"><a href="#作者声明" class="headerlink" title="作者声明"></a><strong>作者声明</strong></h2><pre><code>本文版权归作者所有，旨在技术交流使用。未经作者同意禁止转载，转载后需在文章页面明显位置给出原文连接，否则相关责任自行承担。</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Glibc </tag>
+            
+            <tag> ptmalloc2 </tag>
+            
+            <tag> unlink </tag>
+            
+            <tag> 堆分配 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>android bin kits</title>
+      <link href="/2020/01/02/android-bin-kits/"/>
+      <url>/2020/01/02/android-bin-kits/</url>
+      
+        <content type="html"><![CDATA[<h2 id="What？"><a href="#What？" class="headerlink" title="What？"></a>What？</h2><p>android_bin kits是一个工具集，仅围绕一个目的进行：<strong>分析Android系统中的可执行文件（dex、odex、oat、vdex）中有什么？</strong>  </p><h2 id="Why？"><a href="#Why？" class="headerlink" title="Why？"></a>Why？</h2><p>Android native层代码经过编译后会有3种形式：静态库、动态库、elf可执行文件，而静态库最终会链接到动态库或可执行文件中去，最后android系统中native代码只会以动态库和elf可执行文件的形式存在，通过源码工程文件中的makefile、android.mk、android.bp等编译配置文件，我们可以精确的知道某个源码文件或某个函数最后会以什么样形式存在系统哪个文件中； <br/><br><strong>然而，你能通过java源码工程文件知道java代码最后会存在于系统中的哪个可执行文件中吗？</strong>我们只能看到java类代码会被封装成哪个jar包，jar包会转成dex文件，然后android系统还会对dex文件进行优化，生成odex、oat、vdex、cdex、art之类文件。这一切都是android打包程序和dex优化程序做的手脚，那么想找出java源码与系统可执行文件的关系有两条路：研究android打包和优化原理，或逆向可执行文件获得想要的信息？  <br/><br>我选择使用后者方式去<strong>实现java源码与可执行文件的关联。</strong>因为android系统每个版本优化dex文件的机制和文件格式都会有所变化，这个打包和优化的过程也时刻在变。虽然逆向可执行文件也要面临同样的繁琐，但好在Android的各个阶段都有一些好的工具，我只需要利用他们实现我的目的。</p><h2 id="How"><a href="#How" class="headerlink" title="How ?"></a>How ?</h2><ul><li><strong><em>adbtool.py</em></strong> 主要涉及一些用来和android系统交互的接口，用来做系统信息获取和文件拉取；</li><li><strong><em>android_bin.py</em></strong> 是对dex、odex、oat等文件进行分析，得到class、method、feilds、strings等信息，该脚本依赖开源工具<a href="http://newandroidbook.com/tools/dextra.html" target="_blank" rel="noopener">dextra</a>；</li><li><strong><em>vdex2dex.py</em></strong> 封装了android8/9 vdex抽取dex的工具，其所得dex文件可以使用android_bin进一步分析，该脚本依赖开源工具<a href="https://github.com/anestisb/vdexExtractor" target="_blank" rel="noopener">vdexExtractor</a>；</li><li><strong><em>filesystem_analyze.py</em></strong> 对整个安卓系统的可执行文件进行分析，也可以查询某个源码类被包含在哪个可执行文件中,该脚本依赖以上3个脚本。</li></ul><h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><ul><li><strong>1.拉取android系统所有可执行文件到文件夹android-8.0中</strong><br/><br><strong><em>filesystem_analyze.py -pull -o android-8.0</em></strong><br><em>/data/dalvik-cache/x86/system@app@Cube…lled. 2.7 MB/s (20904 bytes in 0.007s)<br>/system/app/Amaze/oat/x86/Amaze.vdex: …ed. 8.4 MB/s (6111971 bytes in 0.692s)<br>/system/app/BasicDreams/oat/x86/BasicD…lled. 1.6 MB/s (15795 bytes in 0.009s)<br>Command ‘adb pull /system/app/DeskClock/oat/x86/DeskClock.vdex android-8.0’ time<br>d out after 2 seconds<br>pull /system/app/DeskClock/oat/x86/DeskClock.vdex faild, try again.</em></li></ul><ul><li><strong>2.对可执行文件系统进行分析，输出可执行文件包含java类信息到     android8-class.json文件中</strong><br/><br><strong><em>filesystem_analyze.py -class -i android-8.0 -o android8-class.json</em></strong>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&quot;system@framework@boot-framework.vdex&quot;: &#123;</span><br><span class="line"></span><br><span class="line">    &quot;AbstractAccountAuthenticator.java&quot;: &quot;81&quot;,  </span><br><span class="line">    &quot;AbstractThreadedSyncAdapter.java&quot;: &quot;1483&quot;,  </span><br><span class="line">    &quot;AccessibilityButtonController.java&quot;: &quot;31&quot;,  </span><br><span class="line">    &quot;AccessibilityService.java&quot;: &quot;48&quot;,  </span><br><span class="line">    &quot;AccessibilityServiceInfo.java&quot;: &quot;57&quot;,    </span><br><span class="line">    &quot;AccountAndUser.java&quot;: &quot;84&quot;,  </span><br><span class="line">    &quot;AccountManager.java&quot;: &quot;128&quot;,  </span><br><span class="line">    &quot;AccountManagerCallback.java&quot;: &quot;125&quot;,   </span><br><span class="line">    &quot;AccountManagerFuture.java&quot;: &quot;89&quot;,   </span><br><span class="line">    &quot;AccountManagerInternal.java&quot;: &quot;130&quot;,   </span><br><span class="line">    </span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li><li><p><strong>3.查询某个类文件包含在哪些可执行文件中</strong><br/><br><strong><em>filesystem_analyze.py -query -i android8-class.json —class-name ActivityManagerInternal.java</em></strong><br><em>precise match as follow:</em><br><em>system@framework@boot-framework.vdex include ActivityManagerInternal.java</em><br><em>boot-framework.vdex include ActivityManagerInternal.java</em>   </p></li><li><p><strong>更多</strong><br>执行python3 xxx.py，会打印readme。</p></li></ul><h2 id="作者声明"><a href="#作者声明" class="headerlink" title="作者声明"></a><strong>作者声明</strong></h2><pre><code>本文版权归作者所有，旨在技术交流使用。未经作者同意禁止转载，转载后需在文章页面明显位置给出原文连接，否则相关责任自行承担。</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 工具 </tag>
+            
+            <tag> 逆向 </tag>
+            
+            <tag> Android </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>binsign</title>
+      <link href="/2020/01/02/binsign/"/>
+      <url>/2020/01/02/binsign/</url>
+      
+        <content type="html"><![CDATA[<h2 id="它是什么？"><a href="#它是什么？" class="headerlink" title="它是什么？"></a>它是什么？</h2><p>binsign是一个尝试解析二进制文件中函数常量或代码引用、函数原型、栈空间分布的项目；为什么要做这个项目呢？形象地说，我想做一个可以分析和提取一个二进制文件DNA的东西（DNA有些夸张了，我只是为了更直接地阐述目的（捂脸），也许叫做二进制函数摘要更合适）。</p><h2 id="技术相关的项目？"><a href="#技术相关的项目？" class="headerlink" title="技术相关的项目？"></a>技术相关的项目？</h2><p>一个被编译成机器码的函数，它有什么特征可以唯一表征这个函数呢？让我们来看看当前是否有相关研究或项目可以提供下思路。</p><h3 id="BinDiff"><a href="#BinDiff" class="headerlink" title="BinDiff"></a>BinDiff</h3><p>BinDiff是第一个要介绍的工具,这个工具在二进制补丁比对领域上享有盛名，最早由恶意软件分析工具厂商zynamics开发并作为商业工具发布，后由google收购并开源。BinDiff所使用的算法不是依赖于函数基本块的实际内容，而是使用基于图的方法表征可执行文件函数：调用图CG（call graph）和流程图CFG（control-flow graph），CG表示方法（函数）在整个程序中的调用关系，图中的节点是方法，边表示调用关系；CFG表示一个方法内的程序执行流，图中的节点是语句（指令），边表示执行流。</p><h3 id="KARTA"><a href="#KARTA" class="headerlink" title="KARTA"></a>KARTA</h3><p>KARTA是以色列安全公司CheckPoint开源的一个IDA插件，用于识别和匹配给定二进制文件中的开源库。它的大致思路是先从开源库中提取二进制代码特征，然后去匹配目标二进制文件。这个地方我们重点关注它所提取的二进制代码特征，它介绍中提到的代码特征有【跳转表，代码段中的字符串和数字常量（主要存在ARM中），全局字符串，全局指针】。另外有2个点也值得关注下1）时间代价的瓶颈主要是IDA，分析TeamViewer整个过程大约花费了2个小时（相当大的程序，其中包含143,000多个函数）；2）为了弥补IDA对函数快识别的不准确，应用了Random-Forest（随机森林）分类器来识别函数的开头和结尾，结果得到了很大的提高。</p><h3 id="Binmap"><a href="#Binmap" class="headerlink" title="Binmap"></a>Binmap</h3><p>Binmap是Quarkslab开源的一个系统扫描程序，它通过遍历一个系统或系统镜像的所有文件，查找程序、库并收集各种信息，例如依赖项、符号等，为系统建立一个散列和信息数据库。目标之一是提供包含多个系统数据库的一种仓库，并更新数据库以跟踪二进制系统的发展。Binmap是一个很宏伟的项目，我的理解是它想做一个二进制版的github commits管理。LIEF是为Binmap提供二进制分析的基础工具，也是Quarkslab另一个开源项目，它就是提供各种系统架构下的elf文件的解析和修改，也可以用来hook。但是可解析数据和readelf能力差不多，只是些elf信息读取和展示，没有做进一步的高级分析。不过有一点非常值得赞的是，它不但支持x86/x64、ARM这类纯二进制代码，它也支持Android系统里java编译出的DEX、ODEX、VDEX、OAT二进制文件的解析。而且，项目首页对Android可执行文件的描述非常清晰（在此吐槽下Android系统的java类可执行文件真是个变化无常的渣男,不过LIEF懂它）。</p><h3 id="Abidiff"><a href="#Abidiff" class="headerlink" title="Abidiff"></a>Abidiff</h3><p>Abidiff是GNU开源项目libabigail的一个附带工具，它比较两个ELF共享库的应用程序二进制接口（ABI，Application Binary Interface），并打印告警信息。 这个工具的主要目标在于检查两个二进制文件是否有影响接口兼容性的变化。它所分析的二进制接口特征都是属于ABI范畴,例如符号接口的增加或删除，或许也会比较接口的参数变化（看着太粗粒度就没在深究），带有DWARF格式的调试信息下更加准确。</p><p><strong>从以上4种涉及二进制接口特征分析的工具来看</strong>：BinDiff基于图的二进制使用较为抽象的方法表征函数，舍弃了一些更为直观简单的信息，diff结果抽象（当然最终结果只是一个相似度的百分比，这个倒是简单），但是我并不想整的这么玄乎，我想找出一些大家可以理解的特征；KARTA的二进制特征看起来很好理解和描述，但是很多二进制函数可能没有类似的特征，而且这种特征也不够唯一。不过它只是想去识别一个开源库，其实不需要提取太多特征，所以特征方面不用追求太多太细；Binmap对二进制特征的分析太浅了，仅仅靠readelf的分析能力，粒度也比较粗，它的粒度不是函数，而是二进制文件；Abidiff虽然是分析的粒度是二进制函数，但分析的也比较浅，也是readelf的分析级别。</p><p><strong><em>总之，没有能满足我内心的工具。</em></strong></p><h2 id="我心目中的样子？"><a href="#我心目中的样子？" class="headerlink" title="我心目中的样子？"></a>我心目中的样子？</h2><p><strong>1.分析一个二进制文件，正确识别出所有函数块；</strong><br><strong>2.抽象函数的强特征和弱特征，其中：</strong><br>1）强特征可以唯一表征该函数，用于快速定位该函数；<br>2）弱特征用于描述函数的其他特性，用于分析函数的变化；<br>3）强特征和弱特征都可由一组特征表示，例如需要几个维度共同确定该二进制函数；<br><strong>4.特征有以下：</strong><br>1）函数原型，包括参数和返回；<br>2）常量字符串、常量数据、全局变量、静态变量的引用；<br>3）代码引用（coderef_to）、代码调用（函数内部代码流程，调用的函数），一定程度上能代表函数的CG和CFG；<br>4）栈空间分布，局部变量信息；<br><strong><em>特征在分析阶段不区分强弱，最后在整个二进制文件中根据检查单个特征或组合特征在该二进制文件的唯一性，区分强、弱特征。</em></strong></p><h2 id="技术选型？"><a href="#技术选型？" class="headerlink" title="技术选型？"></a>技术选型？</h2><p>我是想站在巨人的肩膀上，用最小的工作量实现最有用的功能。熟悉二进制的人这时候也明白多数的基础分析能力IDA都可以满足，不过经过一番研究后我放弃了它。有这么几个原因：<br>1）它部分功能不能用，例如获取函数参数的python接口，笔者实验过多次返回总是错误的；<br>2）分析太慢了，这点就是KARTA工具苦恼的地方；<br>3）不是开源，Linux版本难以获取，free版本不支持那么多的分析（这也是最重要的，如果不考虑速度和开源性，在windows上实现个插件是最快的方式）；<br>4）最重要的一个原因是，因为工作中遇到的问题，我踏出了从零开始的第一步，那就继续干下去吧。另外说一下Ghidra（NSA 2019年初开源的一个类似于IDA的反编译工具），我也尝试用了下。不过它太慢了，比ida慢估计有10倍了；而且文档特别差，我先弃了它。<br>最终我用了readelf和objdump两个工具作为基础，我没有完全从零开始，毕竟也不需要。readelf满足了我对elf文件解析的需求，objdump帮助我反汇编了各个架构的代码；这样我只需要去扫描汇编代码去实现更高级的分析功能，这样我也能更接近elf文件和汇编的原理，这种探索也会给人带来乐趣。也许依赖shell命令实现有些low了，不过至少还有GNU binutils（readelf和objdump属于其项目工具）和elfutils库可以去替代。</p><h2 id="目前实现"><a href="#目前实现" class="headerlink" title="目前实现"></a>目前实现</h2><p>X86、ARM32常量引用分析。</p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.zynamics.com/bindiff.html" target="_blank" rel="noopener">bindiff项目</a><br><a href="https://github.com/CheckPointSW/Karta" target="_blank" rel="noopener">KARTA项目开源地址</a><br><a href="https://blog.quarkslab.com/binmap-a-system-scanner.html" target="_blank" rel="noopener">Binmap项目</a><br><a href="https://lief.quarkslab.com/" target="_blank" rel="noopener">LIEF项目</a><br><a href="https://sourceware.org/libabigail/manual/abidiff.html" target="_blank" rel="noopener">libabigail:Abidiff使用说明</a> </p><h2 id="作者声明"><a href="#作者声明" class="headerlink" title="作者声明"></a><strong>作者声明</strong></h2><pre><code>本文版权归作者所有，旨在技术交流使用。未经作者同意禁止转载，转载后需在文章页面明显位置给出原文连接，否则相关责任自行承担。</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 逆向 </tag>
+            
+            <tag> 二进制 </tag>
+            
+            <tag> 函数摘要 </tag>
+            
+            <tag> 相似性比对 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>基于二进制分析技术的开源漏洞检测方法概述</title>
+      <link href="/2020/01/02/bin-vul-check/"/>
+      <url>/2020/01/02/bin-vul-check/</url>
+      
+        <content type="html"><![CDATA[<p><img src="bin_vul_check.png" alt="基于二进制分析技术的开源漏洞检测方法分类"></p><h2 id="1-开源很重要，漏洞更加值得关注"><a href="#1-开源很重要，漏洞更加值得关注" class="headerlink" title="1.开源很重要，漏洞更加值得关注"></a>1.开源很重要，漏洞更加值得关注</h2><p>开源代码在互联网技术中扮演的角色愈发重要，例如Linux、Android、GNU开源项目，它们构成了互联网及物联网大厦的地基，现在很难说哪个厂商开发的设备或app不依赖于任何开源代码。对开源漏洞进行检测还是很有必要的！目前黑客入侵的最高效简单的方式就是通过已知开源代码的漏洞进行入侵，也就是说如果厂商的代码存在高危的开源漏洞，那在黑客眼中就如同裸奔。</p><h2 id="2-为什么是二进制分析技术"><a href="#2-为什么是二进制分析技术" class="headerlink" title="2.为什么是二进制分析技术"></a>2.为什么是二进制分析技术</h2><p>如果通过源码检测开源漏洞，那就是个简单的补丁文件文本匹配问题。这个问题我也想过，但二进制分析依然有存在的需要：通过源码检测属于白盒审计过程，它存在于代码产品研发阶段。可以说，如果开源代码引入和应急响应做得好，二进制分析是无可作为的，但是根据SDL（安全开发流程）原则，安全应该存在于产品全生命周期中，安全大任仅依靠源码审计阶段是危险的。二进制分析是一个黑盒技术，它通过搜寻公开信息对代码产品的开放形态进行分析，这更符合黑客渗透过程，黑盒方式的漏洞扫描作为SDL对于开源漏洞检测的最后一个环节是必要存在的。而且，目前有能力全流程落入安全管理的厂商还是少的，大多数厂商的产品功能依据已有代码或开源代码二次开发，开源漏洞是广泛存在的，这个问题可以参考<a href="https://keenlab.tencent.com/zh/whitepapers/%E8%85%BE%E8%AE%AF%E5%AE%89%E5%85%A8%E7%A7%91%E6%81%A9%E5%AE%9E%E9%AA%8C%E5%AE%A42018%E5%B9%B4IoT%E5%AE%89%E5%85%A8%E7%99%BD%E7%9A%AE%E4%B9%A6.pdf" target="_blank" rel="noopener">科恩实验室的IOT报告</a>。因此，从黑盒角度出发，运用二进制分析技术去检测开源漏洞是必要的。</p><h2 id="3-通过二进制分析技术检测开源漏洞"><a href="#3-通过二进制分析技术检测开源漏洞" class="headerlink" title="3.通过二进制分析技术检测开源漏洞"></a>3.通过二进制分析技术检测开源漏洞</h2><p>依据上图，二进制分析可以分为静态分析和动态分析，静态、动态的区别就是是否执行指令（实际执行、虚拟执行和模拟执行都属于动态分析）。</p><h3 id="3-1-静态分析"><a href="#3-1-静态分析" class="headerlink" title="3.1 静态分析"></a>3.1 静态分析</h3><ol><li>静态特征检测中，版本检测是最简单的漏洞检测方式，开源代码一般具有严格和规则的版本命名方式，而漏洞披露时一般也会带有影响版本信息。那么将二者联系起来，就可以做一个简单的基于版本扫描的漏洞扫描器。不过版本扫描误报率较大，因为如果产品只是使用了开源的部分代码或者已经打了补丁而没有升级版本号，那么检测出来的漏洞可能是产品中不存在的模块或者已经修补的漏洞。<strong>要知道，打个补丁非常简单，升级版本可能会使产品遇到很多兼容性问题，所以有多少研发不想升级版本可想而知。</strong>常量检测和符号检测是一个相对较为准确且简便的漏洞检测方法。有些漏洞补丁或删除的漏洞代码存在一些二进制下依然存在的常量值（例如打印字符串或初始化数组），这个时候就可以使用该方法检测；补丁中有增减的导出符号（导出函数或变量），那么这个也可以用简单的二进制分析工具（例如readelf）检测与分析。这种方法要看补丁是否有该类的特征，而且要<strong>找准唯一常量特征</strong>，具有一定的局限性，不过可以满足部分漏洞的检测。</li><li>执行流分析中，反编译特征分析是指找出补丁在编译后文件中存在的唯一特征，例如漏洞代码附近引用与被引用的差异，这个可以用IDA脚本来检测；也可以将补丁后的函数（或漏洞函数）提取二进制摘要与目标二进制中该漏洞函数的摘要进行比较，摘要可以使用二进制相似性分析工具<strong><a href="https://www.zynamics.com/bindiff.html" target="_blank" rel="noopener">bindiff</a></strong>采用的CF和CFG图，也可以使用IDA插件<strong><a href="https://github.com/joxeankoret/diaphora" target="_blank" rel="noopener">Diaphora</a></strong>，需要进行一定程度的二次开发，或只用它们函数比较的相似性算法，自己动手丰衣足食。</li><li>中间语言分析技术是为了应对漏洞检测特征在不同指令架构（X86、ARM…）下会发生变化的情况。例如执行流分析中的CF和CFG图在相同源码不同架构下可能是不同的，这样如果需要支持检测不同指令架构，就要对应生成相应的检测模型。通过中间语言将不同架构的指令代码用一种语言表示可以一定程度上降低这种麻烦，当然也存在不同架构下翻译的中间语言差异巨大。<strong>栈空间布局差异检测</strong>是针对补丁代码中存在局部变量差异的情况，这种漏洞和相应补丁修补也经常存在。例如，漏洞是由于不同情况下使用函数中某个局部变量会产生栈空间越界读写，补丁是将局部变量类型由普通结构体变为若干个结构体的联合体，这样可以应对不同结构体的传入都不会产生越界读写，但是对于传入较小结构体变量的情况下，该联合体的使用会将之前函数的栈空间增大（联合体的大小是几个结构体中最大值）。</li></ol><h3 id="3-2-动态分析"><a href="#3-2-动态分析" class="headerlink" title="3.2 动态分析"></a>3.2 动态分析</h3><ol><li>漏洞代码触发技术一般称为POC，但是对于漏洞检测，触发可能不需要通过业务层传递到漏洞代码，毕竟业务层分析需要大量的时间去了解业务和层层调试。可以使用dlopen和dlsym直接构造参数调用漏洞代码触发漏洞，检测函数的返回或漏洞影响的内存变化，可以把它称作<strong>局部POC</strong>。c语言具有导出接口或离导出接口不远的代码可以使用该方法，c++类函数的符号经过修饰，而且存在大量需要构造的对象结构，难度较大。</li><li>HOOK技术既可以作为触发漏洞代码方法的辅助，也可以作为主要方式检测，不过需要找到函数符号或者其它可以hook的点。例如，补丁在原漏洞代码中增加了某个函数的调用，就可以hook漏洞调用代码和新增函数，查看补丁是否增加。目前经常使用的hook工具一般的hook点都是函数符号，这里就不多介绍了，用起来还是很方便的。这里重点推广一下<strong><a href="https://software.intel.com/en-us/articles/pin-a-dynamic-binary-instrumentation-tool" target="_blank" rel="noopener">Intel Pin</a></strong>，<strong>强大而深入骨髓的二进制插桩工具</strong>，它可以进行指令级别、基本块级别、函数级别、执行流级别的插桩，而且提供了各个插桩级别中很多用来过滤插桩点的接口，例如只对JMP指令插桩跟踪。执行流级别被称为trace，它的粒度其实也是基本块，不过它不是对整个二进制文件进行插桩，它只会动态的对执行路径中的基本块进行插桩，这大大节约了插桩的时间代价和空间消耗。（通过在插桩点注册一个回调函数就可以实现hook，这就是插桩和hook的联系，所以通过Intel Pin可以实现更多粒度的hook）</li><li>使用模拟执行技术可以<strong>单独执行函数，甚至片段的指令序列</strong>，例如<a href="https://github.com/unicorn-engine/unicorn" target="_blank" rel="noopener">unicorn</a>或<a href="https://github.com/cea-sec/miasm" target="_blank" rel="noopener">miasm</a>都提供了这样的方法，京东的二进制分析工具<a href="https://sec.thief.one/article_content?a_id=e81bf95af26f0ff148ba2d0df5e0b376" target="_blank" rel="noopener">麒麟</a>基于unicorn貌似把该能力进行了更友好的包装。这很实用，因为在目标检测设备上运行动态检测程序经常由于系统权限和环境依赖问题，使得检测方法失效，甚至代码都难以接触。例如嵌入式设备的内核代码，root权限也无法进行插桩检测(代码空间的rwx属性root应该是改不了的)，在真实设备上严格的权限体系，内核空间可不是我们能随意游走的。如果将目标代码镜像拉下来放到模拟器中执行（也可以把内核提出来），可以使用模拟器提供的丰富的hook功能和栈操作功能，让多数函数满足执行环境，例如hook其他函数调用等，例如入参条件，例如数据段访问条件，进而可以触发漏洞代码。污点跟踪技术是检测漏洞触发的一种辅助技术，漏洞的发生多是由于不合预期的操作了某块内存，这时可以通过污点跟踪技术检测漏洞触发的效果。 </li></ol><h2 id="作者声明"><a href="#作者声明" class="headerlink" title="作者声明"></a><strong>作者声明</strong></h2><pre><code>本文版权归作者所有，旨在技术交流使用。未经作者同意禁止转载，转载后需在文章页面明显位置给出原文连接，否则相关责任自行承担。</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 漏洞 </tag>
+            
+            <tag> 二进制 </tag>
+            
+            <tag> 开源安全 </tag>
+            
+            <tag> 概述 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>android可执行文件的综述</title>
+      <link href="/2020/01/02/android-exec-files/"/>
+      <url>/2020/01/02/android-exec-files/</url>
+      
+        <content type="html"><![CDATA[<h2 id="1-java-dex-odex-oat-vdex的历史演变"><a href="#1-java-dex-odex-oat-vdex的历史演变" class="headerlink" title="1. java/dex/odex/oat/vdex的历史演变"></a>1. java/dex/odex/oat/vdex的历史演变</h2><ul><li>在应用开发时，Android代码的主要部分通常用<strong>Java</strong>编写；APK构建时，java源码首先用javac编译成<strong>Java字节码</strong> ，然后Android通过使用d8编译器将此字节码转换为<strong>DEX文件</strong>（Dalvik字节码）。</li><li>在Android 4.4（KitKat）之前，运行时使用JIT编译将Dalvik字节码转换为目标机器代码，JIT在每次执行应用程序时都会执行，因此代码执行效率很低。从Android 4.4开始，引入新的运行时ART，它在安装过程中执行优化，安装需要更多时间，但转换为本机代码只需执行一次。</li><li>为了优化DEX字节码，原始DEX文件（例如classes.dex）被提取和转换为另一个包含机器代码的文件。这个新文件通常具有<strong>.odex</strong> ，<strong>.oat</strong>扩展名；</li><li>在安卓5.0以前，主要使用虚拟机是Dalvik。使用dexopt优化生成文件为odex（无机器代码），主要组成有完整dex文件、odex文件头、依赖库列表、类索引信息等；</li><li>在art虚拟机模式下，<strong>oat文件</strong>直接包含了可在ART下运行的机器码，OAT中还有一份原始DEX的副本。</li><li>从8.0以后，Dex从Android 8.0后独立到<strong>vdex文件</strong>，dex2oat执行的转换会生成两个文件：classes.odex（实际上是oat文件）：包含本机代码的OAT和classes.vdex：包含原始DEX文件副本的VDEX文件。<br><img src="android_exec_files.png" alt="盗图：版权归LIEF项目拥有"> </li></ul><h2 id="2-安卓可执行文件"><a href="#2-安卓可执行文件" class="headerlink" title="2. 安卓可执行文件"></a>2. 安卓可执行文件</h2><ul><li><strong>OAT文件</strong>  <ul><li>OAT文件是一种Android私有ELF文件格式，是Android运行时ART的核心，不仅包含有从DEX文件翻译而来的本地机器指令，还包含有原来的DEX文件内容；</li><li>在 Android 8.0之后，dex2oat 生成的不再是单一个 OAT 文件，而是生成两个文件 classes.odex（实际是oat文件）跟 classes.vdex（dex 副本），odex + vdex = apk 的全部源码 （vdex 并不是独立于odex 的文件 odex + vdex 才代表一个apk );</li><li>Android &lt;=7可以从oat文件中提取dex，8.0以后只能从vdex中提取。  <br/><br/></li></ul></li><li><strong>ODEX文件</strong><ul><li>Android &lt;=4.4之前，使用dexopt优化DEX文件为odex，主要组成有完整dex文件、odex文件头、依赖库列表、类索引信息等；</li><li>在art模式下（5.0以后art为默认运行时环境），ODEX文件实质上是oat文件。<br><br/><br/></li></ul></li><li><strong>vdex文件</strong><ul><li>Android 8.0在odex的基础上又引入了vdex机制，目的是为了减少dex2oat中验证的时间；</li><li>verified dex，包含 raw dex +（quicken info)，文件头+打包的一些验证好的dex；</li><li>Dex从Android 8.0后独立到vdex文件，这个时候要逆向，一样可以从 vdex 中提取出 dex文件，再作逆向<br><br/><br/></li></ul></li><li><strong>cdex</strong><ul><li>cdex是Android 9推出的一种新型Dex文件，即Compact Dex（Cdex）。Cdex是一种ART内部文件格式，它压缩各种Dex数据结构（例如方法头）并对多索引文件中的常见数据blob（例如字符串）进行重复数据删除。来自输入应用程序的Dex文件的重复数据删除数据存储在Vdex容器的共享部分中。<br><br/><br/></li></ul></li><li><strong>Art</strong>   <ul><li>image文件，存储热点方法string，method，types等。</li></ul></li></ul><h2 id="3-安卓可执行文件的分析工具"><a href="#3-安卓可执行文件的分析工具" class="headerlink" title="3. 安卓可执行文件的分析工具"></a>3. 安卓可执行文件的分析工具</h2><h3 id="提取dex类"><a href="#提取dex类" class="headerlink" title="提取dex类"></a><strong>提取dex类</strong></h3><ul><li><a href="https://github.com/anestisb/vdexExtractor" target="_blank" rel="noopener">vdexExtractor &amp;&amp; compact_dex_converter_linux</a>（支持8.0、9.0的vdex提取）<ul><li>转化过程：<br><code>Vdex - &gt; dex (android 8)， vdex -&gt; cdex -&gt; dex (Android 9)</code></li><li>命令行：<br><code>Vdex-&gt;dex:  vdexExtractor -i /tmp/BasicDreams.vdex -o /tmp --deps -f   （9.0里会先转成cdex）</code><br><code>Cdex -&gt; dex:    compact_dex_converter_linux -w tmp ./wifi-service_classes.cdex  （注意：cdex转dex，后缀不会变，依然为dex）</code><br/><br/></li></ul></li><li><p>oatdump<br>（<em>安卓system/bin目录下自带，编译为共享文件，并且各个Android版本下的不通用，不便于做Android全系列的离线分析）<br>支持查看oat文件的类与方法，支持类名过滤，支持从oat中导出dex文件；其中，8.0和9.0指定oat或odex文件，但实际从vdex中提取dex，需将odex文件和vdex文件放在同一目录下</em>。  </p><ul><li>使用例子（dump services.odex中类名为PackageManagerService，方法为isPackageDeviceAdminOnAnyUse的相关信息）<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.oatdump --oat-file&#x3D;services.odex --class-filter&#x3D;PackageManagerService --method-filter&#x3D;isPackageDeviceAdminOnAnyUse</span><br></pre></td></tr></table></figure></li><li>也可以导出dex文件<br><code>Example: --export-dex-to=/data/local/tmp</code> <br/><br/></li></ul></li><li><p><a href="http://newandroidbook.com/tools/dextra.html" target="_blank" rel="noopener">dextra</a><br>支持从oat、odex、vdex中提取dex文件，支持查看dex、odex、oat、dex类、方法、字符串、符号等。安卓8.0、9.0的oat文件不支持查看，9.0的vdex不支持。</p></li></ul><ul><li><p><a href="https://github.com/JesusFreke/smali" target="_blank" rel="noopener">baksmali</a><br>主要用来反编译dex到jar，也可以从jar回编译到smali</p></li><li><p><a href="https://lief.quarkslab.com/doc/latest/Intro.html" target="_blank" rel="noopener">lief</a><br>用于解析和修改 ELF, PE 和MachO（mac平台上可执行文件）格式的跨平台库，支持Python调用，当然也支持dex、odex、oat、cdex的解析，不过当前不支持Android 9.0的可执行文件。</p></li></ul><h3 id="dex转jar"><a href="#dex转jar" class="headerlink" title="dex转jar"></a>dex转jar</h3><ul><li>dex2jar-2.0<br>d2j-dex2jar.bat wifi-service_classes.dex   （报版本错误时，将dex的版本改为0x36） </li></ul><h2 id="作者声明"><a href="#作者声明" class="headerlink" title="作者声明"></a><strong>作者声明</strong></h2><pre><code>本文版权归作者所有，旨在技术交流使用。未经作者同意禁止转载，转载后需在文章页面明显位置给出原文连接，否则相关责任自行承担。</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Android </tag>
+            
+            <tag> OAT </tag>
+            
+            <tag> ODEX </tag>
+            
+            <tag> VDEX </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>

@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="baidu-site-verification" content="093lY4ziMu" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="A hexo theme">
+    <meta name="keyword"  content="rohex, hexo-theme-snail">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!--<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>-->
+    <title>
+        
+          binsign - Hexo-theme-snail
+        
+    </title>
+
+    <link rel="canonical" href="https://x-16xb.github.io/2020/01/02/binsign/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS --> 
+    
+        
+<link rel="stylesheet" href="/css/dusign-light.css">
+
+        
+<link rel="stylesheet" href="/css/dusign-common-light.css">
+
+        
+<link rel="stylesheet" href="/css/font-awesome.css">
+
+        
+<link rel="stylesheet" href="/css/toc.css">
+
+        <!-- background effects end -->
+    
+    
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    
+<link rel="stylesheet" href="/css/widget.css">
+
+
+    
+<link rel="stylesheet" href="/css/rocket.css">
+
+
+    
+<link rel="stylesheet" href="/css/signature.css">
+
+
+    
+<link rel="stylesheet" href="/css/fonts.googleapis.css">
+
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    
+        <!-- background effects start -->
+        
+        <!-- background effects end -->
+    
+
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            
+                background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('')
+                /*post*/
+            
+        
+    }
+    
+    #signature{
+        background-image: url('/img/signature/dusign.png');
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#逆向" title="逆向">逆向</a>
+                            
+                              <a class="tag" href="/tags/#二进制" title="二进制">二进制</a>
+                            
+                              <a class="tag" href="/tags/#函数摘要" title="函数摘要">函数摘要</a>
+                            
+                              <a class="tag" href="/tags/#相似性比对" title="相似性比对">相似性比对</a>
+                            
+                        </div>
+                        <h1>binsign</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Rohex on
+                            2020-01-02
+                        </span>
+
+                        
+                            <div class="blank_box"></div>
+                            <span class="meta">
+                                Words <span class="post-count">2.1k</span> and
+                                Reading Time <span class="post-count">7</span> Minutes
+                            </span>
+                            <div class="blank_box"></div>
+                            <!-- 不蒜子统计 start -->
+                            <span class="meta">
+                                Viewed <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> Times
+                            </span>
+                            <!-- 不蒜子统计 end -->
+                        
+
+                    </div>
+                
+
+                </div>
+            </div>
+        </div>      
+    </div>
+
+    
+    <div class="waveWrapper">
+        <div class="wave wave_before" style="background-image: url('/img/wave-light.png')"></div>
+        <div class="wave wave_after" style="background-image: url('/img/wave-light.png')"></div>
+    </div>
+    
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Rohex的博客</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/photography/">Photography</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                    <li>
+                        <a href="https://blog.csdn.net/d_Nail" target="_blank">Chinese Blog</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="它是什么？"><a href="#它是什么？" class="headerlink" title="它是什么？"></a>它是什么？</h2><p>binsign是一个尝试解析二进制文件中函数常量或代码引用、函数原型、栈空间分布的项目；为什么要做这个项目呢？形象地说，我想做一个可以分析和提取一个二进制文件DNA的东西（DNA有些夸张了，我只是为了更直接地阐述目的（捂脸），也许叫做二进制函数摘要更合适）。</p>
+<h2 id="技术相关的项目？"><a href="#技术相关的项目？" class="headerlink" title="技术相关的项目？"></a>技术相关的项目？</h2><p>一个被编译成机器码的函数，它有什么特征可以唯一表征这个函数呢？让我们来看看当前是否有相关研究或项目可以提供下思路。</p>
+<h3 id="BinDiff"><a href="#BinDiff" class="headerlink" title="BinDiff"></a>BinDiff</h3><p>BinDiff是第一个要介绍的工具,这个工具在二进制补丁比对领域上享有盛名，最早由恶意软件分析工具厂商zynamics开发并作为商业工具发布，后由google收购并开源。BinDiff所使用的算法不是依赖于函数基本块的实际内容，而是使用基于图的方法表征可执行文件函数：调用图CG（call graph）和流程图CFG（control-flow graph），CG表示方法（函数）在整个程序中的调用关系，图中的节点是方法，边表示调用关系；CFG表示一个方法内的程序执行流，图中的节点是语句（指令），边表示执行流。</p>
+<h3 id="KARTA"><a href="#KARTA" class="headerlink" title="KARTA"></a>KARTA</h3><p>KARTA是以色列安全公司CheckPoint开源的一个IDA插件，用于识别和匹配给定二进制文件中的开源库。它的大致思路是先从开源库中提取二进制代码特征，然后去匹配目标二进制文件。这个地方我们重点关注它所提取的二进制代码特征，它介绍中提到的代码特征有【跳转表，代码段中的字符串和数字常量（主要存在ARM中），全局字符串，全局指针】。另外有2个点也值得关注下1）时间代价的瓶颈主要是IDA，分析TeamViewer整个过程大约花费了2个小时（相当大的程序，其中包含143,000多个函数）；2）为了弥补IDA对函数快识别的不准确，应用了Random-Forest（随机森林）分类器来识别函数的开头和结尾，结果得到了很大的提高。</p>
+<h3 id="Binmap"><a href="#Binmap" class="headerlink" title="Binmap"></a>Binmap</h3><p>Binmap是Quarkslab开源的一个系统扫描程序，它通过遍历一个系统或系统镜像的所有文件，查找程序、库并收集各种信息，例如依赖项、符号等，为系统建立一个散列和信息数据库。目标之一是提供包含多个系统数据库的一种仓库，并更新数据库以跟踪二进制系统的发展。Binmap是一个很宏伟的项目，我的理解是它想做一个二进制版的github commits管理。LIEF是为Binmap提供二进制分析的基础工具，也是Quarkslab另一个开源项目，它就是提供各种系统架构下的elf文件的解析和修改，也可以用来hook。但是可解析数据和readelf能力差不多，只是些elf信息读取和展示，没有做进一步的高级分析。不过有一点非常值得赞的是，它不但支持x86/x64、ARM这类纯二进制代码，它也支持Android系统里java编译出的DEX、ODEX、VDEX、OAT二进制文件的解析。而且，项目首页对Android可执行文件的描述非常清晰（在此吐槽下Android系统的java类可执行文件真是个变化无常的渣男,不过LIEF懂它）。</p>
+<h3 id="Abidiff"><a href="#Abidiff" class="headerlink" title="Abidiff"></a>Abidiff</h3><p>Abidiff是GNU开源项目libabigail的一个附带工具，它比较两个ELF共享库的应用程序二进制接口（ABI，Application Binary Interface），并打印告警信息。 这个工具的主要目标在于检查两个二进制文件是否有影响接口兼容性的变化。它所分析的二进制接口特征都是属于ABI范畴,例如符号接口的增加或删除，或许也会比较接口的参数变化（看着太粗粒度就没在深究），带有DWARF格式的调试信息下更加准确。</p>
+<p><strong>从以上4种涉及二进制接口特征分析的工具来看</strong>：BinDiff基于图的二进制使用较为抽象的方法表征函数，舍弃了一些更为直观简单的信息，diff结果抽象（当然最终结果只是一个相似度的百分比，这个倒是简单），但是我并不想整的这么玄乎，我想找出一些大家可以理解的特征；KARTA的二进制特征看起来很好理解和描述，但是很多二进制函数可能没有类似的特征，而且这种特征也不够唯一。不过它只是想去识别一个开源库，其实不需要提取太多特征，所以特征方面不用追求太多太细；Binmap对二进制特征的分析太浅了，仅仅靠readelf的分析能力，粒度也比较粗，它的粒度不是函数，而是二进制文件；Abidiff虽然是分析的粒度是二进制函数，但分析的也比较浅，也是readelf的分析级别。</p>
+<p><strong><em>总之，没有能满足我内心的工具。</em></strong></p>
+<h2 id="我心目中的样子？"><a href="#我心目中的样子？" class="headerlink" title="我心目中的样子？"></a>我心目中的样子？</h2><p><strong>1.分析一个二进制文件，正确识别出所有函数块；</strong><br><strong>2.抽象函数的强特征和弱特征，其中：</strong><br>1）强特征可以唯一表征该函数，用于快速定位该函数；<br>2）弱特征用于描述函数的其他特性，用于分析函数的变化；<br>3）强特征和弱特征都可由一组特征表示，例如需要几个维度共同确定该二进制函数；<br><strong>4.特征有以下：</strong><br>1）函数原型，包括参数和返回；<br>2）常量字符串、常量数据、全局变量、静态变量的引用；<br>3）代码引用（coderef_to）、代码调用（函数内部代码流程，调用的函数），一定程度上能代表函数的CG和CFG；<br>4）栈空间分布，局部变量信息；<br><strong><em>特征在分析阶段不区分强弱，最后在整个二进制文件中根据检查单个特征或组合特征在该二进制文件的唯一性，区分强、弱特征。</em></strong></p>
+<h2 id="技术选型？"><a href="#技术选型？" class="headerlink" title="技术选型？"></a>技术选型？</h2><p>我是想站在巨人的肩膀上，用最小的工作量实现最有用的功能。熟悉二进制的人这时候也明白多数的基础分析能力IDA都可以满足，不过经过一番研究后我放弃了它。有这么几个原因：<br>1）它部分功能不能用，例如获取函数参数的python接口，笔者实验过多次返回总是错误的；<br>2）分析太慢了，这点就是KARTA工具苦恼的地方；<br>3）不是开源，Linux版本难以获取，free版本不支持那么多的分析（这也是最重要的，如果不考虑速度和开源性，在windows上实现个插件是最快的方式）；<br>4）最重要的一个原因是，因为工作中遇到的问题，我踏出了从零开始的第一步，那就继续干下去吧。另外说一下Ghidra（NSA 2019年初开源的一个类似于IDA的反编译工具），我也尝试用了下。不过它太慢了，比ida慢估计有10倍了；而且文档特别差，我先弃了它。<br>最终我用了readelf和objdump两个工具作为基础，我没有完全从零开始，毕竟也不需要。readelf满足了我对elf文件解析的需求，objdump帮助我反汇编了各个架构的代码；这样我只需要去扫描汇编代码去实现更高级的分析功能，这样我也能更接近elf文件和汇编的原理，这种探索也会给人带来乐趣。也许依赖shell命令实现有些low了，不过至少还有GNU binutils（readelf和objdump属于其项目工具）和elfutils库可以去替代。</p>
+<h2 id="目前实现"><a href="#目前实现" class="headerlink" title="目前实现"></a>目前实现</h2><p>X86、ARM32常量引用分析。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.zynamics.com/bindiff.html" target="_blank" rel="noopener">bindiff项目</a><br><a href="https://github.com/CheckPointSW/Karta" target="_blank" rel="noopener">KARTA项目开源地址</a><br><a href="https://blog.quarkslab.com/binmap-a-system-scanner.html" target="_blank" rel="noopener">Binmap项目</a><br><a href="https://lief.quarkslab.com/" target="_blank" rel="noopener">LIEF项目</a><br><a href="https://sourceware.org/libabigail/manual/abidiff.html" target="_blank" rel="noopener">libabigail:Abidiff使用说明</a> </p>
+<h2 id="作者声明"><a href="#作者声明" class="headerlink" title="作者声明"></a><strong>作者声明</strong></h2><pre><code>本文版权归作者所有，旨在技术交流使用。未经作者同意禁止转载，转载后需在文章页面明显位置给出原文连接，否则相关责任自行承担。
+</code></pre>
+                
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2020/01/02/bin-vul-check/" data-toggle="tooltip" data-placement="top" title="基于二进制分析技术的开源漏洞检测方法概述">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                <!-- tip start -->
+                
+
+                
+                <div class="comment_notes">
+                    <p>
+                        This is copyright.
+                    </p>
+                </div>
+                
+                <!-- tip end -->
+
+                <!-- Sharing -->
+                
+                <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                <!--  css & js -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!-- Sharing -->
+
+                <!-- gitment start -->
+                
+                <hr>
+                <div id="blog_comments"></div>
+
+<!--
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+-->
+<!--
+<link rel="stylesheet" href="/css/gitment.css">
+<script type="text/javascript" src="/js/gitment.js"></script>
+-->
+
+<script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css"/>
+
+<!--
+<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+<script src="https://billts.site/js/gitment.js"></script>
+-->
+
+<script>
+const myTheme = {
+  render(state, instance) {
+    const container = document.createElement('div')
+    container.lang = "en-US"
+    container.className = 'gitment-container gitment-root-container'
+    
+     // your custom component
+    container.appendChild(instance.renderSomething(state, instance))
+    
+    container.appendChild(instance.renderHeader(state, instance))
+    container.appendChild(instance.renderComments(state, instance))
+    container.appendChild(instance.renderEditor(state, instance))
+    //container.appendChild(instance.renderFooter(state, instance))
+    return container
+  },
+  renderSomething(state, instance) {
+    const container = document.createElement('div')
+    container.lang = "en-US"
+    container.className = 'hello_visitor'
+    if (state.user.login) {
+      container.innerText = `Hello ${state.user.login}, Welcome to comment system`
+    }
+    return container
+  }
+}
+
+
+const gitment = new Gitment({
+    id: 'Thu Jan 02 2020 16:30:30 GMT+0800', // optional
+    owner: "",
+    repo: "",
+    oauth: {
+      client_id: "",
+      client_secret: "",
+    },
+    theme: myTheme,
+    // ...
+    // For more available options, check out the documentation below
+  })
+  
+  gitment.render('blog_comments')
+  // or
+  // gitment.render(document.getElementById('comments'))
+  // or
+  // document.body.appendChild(gitment.render())
+</script>
+                
+                <!-- gitment end -->
+
+                <!-- 来必力City版安装代码 -->
+                
+                <!-- City版安装代码已完成 -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#逆向" title="逆向">逆向</a>
+                        
+                          <a class="tag" href="/tags/#二进制" title="二进制">二进制</a>
+                        
+                          <a class="tag" href="/tags/#函数摘要" title="函数摘要">函数摘要</a>
+                        
+                          <a class="tag" href="/tags/#相似性比对" title="相似性比对">相似性比对</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/" target="_blank">Rohex&#39;s Blog</a></li>
+                    
+                        <li><a href="#" target="_blank">Rohex&#39;s Web</a></li>
+                    
+                        <li><a href="https://github.com/x-16xb" target="_blank">Rohex&#39;s Github</a></li>
+                    
+                        <li><a href="#" target="_blank">Other</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+
+
+<style  type="text/css">
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/x-16xb">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/Rohex">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/Rohe">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/Rohex">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Rohex 2020 
+                    <br>
+                    Powered by 
+                    <a href="https://github.com/dusign/hexo-theme-snail" target="_blank" rel="noopener">
+                        <i>hexo-theme-snail</i>
+                    </a> | 
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0"
+                        width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=dusign&repo=hexo-theme-snail&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- Search -->
+
+<script src="/js/search.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://x-16xb.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Search -->
+
+    <script type="text/javascript">      
+        var search_path = "search.xml";
+        if (search_path.length == 0) {
+            search_path = "search.xml";
+        }
+    var path = "/" + search_path;
+    searchFunc(path, 'local-search-input', 'local-search-result');
+    </script>
+
+
+<!-- busuanzi -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+
+    
+        <!-- background effects start -->
+        
+
+        
+            <script type="text/javascript" src="/js/mouse-click.js" content='[&quot;🌱&quot;,&quot;just do it&quot;,&quot;🌾&quot;,&quot;🍀&quot;,&quot;don&#39;t give up&quot;,&quot;🍂&quot;,&quot;🌻&quot;,&quot;try it again&quot;,&quot;🍃&quot;,&quot;never say die&quot;,&quot;🌵&quot;,&quot;🌿&quot;,&quot;🌴&quot;]' color='[&quot;rgb(121,93,179)&quot; ,&quot;rgb(76,180,231)&quot; ,&quot;rgb(184,90,154)&quot; ,&quot;rgb(157,211,250)&quot; ,&quot;rgb(255,0,0)&quot; ,&quot;rgb(242,153,29)&quot; ,&quot;rgb(23,204,16)&quot; ,&quot;rgb(222,0,0)&quot; ,&quot;rgb(22,36,92)&quot; ,&quot;rgb(127,24,116)&quot; ,&quot;rgb(119,195,79)&quot; ,&quot;rgb(4,77,34)&quot; ,&quot;rgb(122,2,60)&quot;]'></script>
+        
+
+        <!-- background effects end -->
+    
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+
+</html>

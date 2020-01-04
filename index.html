@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="baidu-site-verification" content="093lY4ziMu" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="A hexo theme">
+    <meta name="keyword"  content="rohex, hexo-theme-snail">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!--<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>-->
+    <title>
+        
+          Hexo-theme-snail
+        
+    </title>
+
+    <link rel="canonical" href="https://x-16xb.github.io/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS --> 
+    
+        
+<link rel="stylesheet" href="/css/dusign-light.css">
+
+        
+<link rel="stylesheet" href="/css/dusign-common-light.css">
+
+        
+<link rel="stylesheet" href="/css/font-awesome.css">
+
+        
+<link rel="stylesheet" href="/css/toc.css">
+
+        <!-- background effects end -->
+    
+    
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    
+<link rel="stylesheet" href="/css/widget.css">
+
+
+    
+<link rel="stylesheet" href="/css/rocket.css">
+
+
+    
+<link rel="stylesheet" href="/css/signature.css">
+
+
+    
+<link rel="stylesheet" href="/css/fonts.googleapis.css">
+
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    
+        <!-- background effects start -->
+        
+        <!-- background effects end -->
+    
+
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            
+                background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/img/header_img/home-bg-1-dark.jpg') 
+                /*config*/
+            
+        
+    }
+    
+    #signature{
+        background-image: url('/img/signature/dusign.png');
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="site-heading">
+                        <h1>Rohex的博客</h1>
+                        <!--<hr class="small">-->
+                        <span id="subdusi" class="subheading">大家好！我是Rohex，没错！是Robin的三次方，我希望自己能比Robin更优秀！</span>
+                    </div>
+                
+
+                </div>
+            </div>
+        </div>      
+    </div>
+
+    
+    <div class="waveWrapper">
+        <div class="wave wave_before" style="background-image: url('/img/wave-light.png')"></div>
+        <div class="wave wave_after" style="background-image: url('/img/wave-light.png')"></div>
+    </div>
+    
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Rohex的博客</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/photography/">Photography</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                    <li>
+                        <a href="https://blog.csdn.net/d_Nail" target="_blank">Chinese Blog</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Main Content -->
+<div class="container">
+    <div class="row">
+        
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
+                <!-- Top -->
+
+    
+
+        <div class="post-preview">
+
+            <a href="/2020/01/03/elf-symbol-delay-bind/">
+                <h2 class="post-title">
+                    <img class="top_logo" src="/img/tp.png"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;ELF符号延迟绑定（动态符号的加载）
+                </h2>
+                <h3 class="post-subtitle">
+                    
+                </h3>
+                <div class="post-content-preview">
+                    过程总结首次调用会跳到动态符号的.plt表项的首条指令；该指令会跳转到该符号的.got表项地址，初始时该处存放的是.plt表项的第二条指令；.plt第二条指令会压入该符号的表项号，然后跳入.plt首地址；.plt首地址将got表中的第二项压入栈中（即本模块对应的ID），然后跳转到got表项的第三项执行（ _dl_runtime_resolve函数）； _dl_runtime_resolve函......
+                </div>
+            </a>
+            
+                <p class="post-meta" style="margin: 10px 0;">
+                    Posted by Rohex on
+                    2020-01-03
+                </p>
+                <div class="tags">
+                    
+                      <a href="/tags/#ELF" title="ELF">ELF</a>
+                    
+                      <a href="/tags/#延迟绑定" title="延迟绑定">延迟绑定</a>
+                    
+                      <a href="/tags/#符号加载" title="符号加载">符号加载</a>
+                    
+                </div>
+            
+
+        </div>
+        <hr>
+
+    
+
+    
+
+        <div class="post-preview">
+
+            <a href="/2020/01/03/ptmalloc2/">
+                <h2 class="post-title">
+                    <img class="top_logo" src="/img/tp.png"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Glibc堆内存管理知识梳理
+                </h2>
+                <h3 class="post-subtitle">
+                    
+                </h3>
+                <div class="post-content-preview">
+                    前言：在读了Ptmalloc2源代码分析和阿里牛人文章Linux堆内存管理深入分析后，本文以一种 有序的知识点摘要形式重新梳理下堆内存管理知识，希望可以将堆内存管理知识点进行概括、总结、串联，本文适合对堆内存管理有一定零星了解，通过本文将知识点串起来。
+基础概念
+当前针对各大平台主要有如下几种堆内存管理机制：
+
+dlmalloc – General purpose allocator
+ptm......
+                </div>
+            </a>
+            
+                <p class="post-meta" style="margin: 10px 0;">
+                    Posted by Rohex on
+                    2020-01-03
+                </p>
+                <div class="tags">
+                    
+                      <a href="/tags/#Glibc" title="Glibc">Glibc</a>
+                    
+                      <a href="/tags/#ptmalloc2" title="ptmalloc2">ptmalloc2</a>
+                    
+                      <a href="/tags/#unlink" title="unlink">unlink</a>
+                    
+                      <a href="/tags/#堆分配" title="堆分配">堆分配</a>
+                    
+                </div>
+            
+
+        </div>
+        <hr>
+
+    
+
+    
+
+        <div class="post-preview">
+
+            <a href="/2020/01/02/binsign/">
+                <h2 class="post-title">
+                    <img class="top_logo" src="/img/tp.png"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;binsign
+                </h2>
+                <h3 class="post-subtitle">
+                    
+                </h3>
+                <div class="post-content-preview">
+                    它是什么？binsign是一个尝试解析二进制文件中函数常量或代码引用、函数原型、栈空间分布的项目；为什么要做这个项目呢？形象地说，我想做一个可以分析和提取一个二进制文件DNA的东西（DNA有些夸张了，我只是为了更直接地阐述目的（捂脸），也许叫做二进制函数摘要更合适）。
+技术相关的项目？一个被编译成机器码的函数，它有什么特征可以唯一表征这个函数呢？让我们来看看当前是否有相关研究或项目可以提供下......
+                </div>
+            </a>
+            
+                <p class="post-meta" style="margin: 10px 0;">
+                    Posted by Rohex on
+                    2020-01-02
+                </p>
+                <div class="tags">
+                    
+                      <a href="/tags/#逆向" title="逆向">逆向</a>
+                    
+                      <a href="/tags/#二进制" title="二进制">二进制</a>
+                    
+                      <a href="/tags/#函数摘要" title="函数摘要">函数摘要</a>
+                    
+                      <a href="/tags/#相似性比对" title="相似性比对">相似性比对</a>
+                    
+                </div>
+            
+
+        </div>
+        <hr>
+
+    
+
+    
+
+        <div class="post-preview">
+
+            <a href="/2020/01/02/bin-vul-check/">
+                <h2 class="post-title">
+                    <img class="top_logo" src="/img/tp.png"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;基于二进制分析技术的开源漏洞检测方法概述
+                </h2>
+                <h3 class="post-subtitle">
+                    
+                </h3>
+                <div class="post-content-preview">
+                    
+1.开源很重要，漏洞更加值得关注开源代码在互联网技术中扮演的角色愈发重要，例如Linux、Android、GNU开源项目，它们构成了互联网及物联网大厦的地基，现在很难说哪个厂商开发的设备或app不依赖于任何开源代码。对开源漏洞进行检测还是很有必要的！目前黑客入侵的最高效简单的方式就是通过已知开源代码的漏洞进行入侵，也就是说如果厂商的代码存在高危的开源漏洞，那在黑客眼中就如同裸奔。
+2.为什......
+                </div>
+            </a>
+            
+                <p class="post-meta" style="margin: 10px 0;">
+                    Posted by Rohex on
+                    2020-01-02
+                </p>
+                <div class="tags">
+                    
+                      <a href="/tags/#漏洞" title="漏洞">漏洞</a>
+                    
+                      <a href="/tags/#二进制" title="二进制">二进制</a>
+                    
+                      <a href="/tags/#开源安全" title="开源安全">开源安全</a>
+                    
+                      <a href="/tags/#概述" title="概述">概述</a>
+                    
+                </div>
+            
+
+        </div>
+        <hr>
+
+    
+
+    
+
+        <div class="post-preview">
+
+            <a href="/2020/01/02/android-exec-files/">
+                <h2 class="post-title">
+                    <img class="top_logo" src="/img/tp.png"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android可执行文件的综述
+                </h2>
+                <h3 class="post-subtitle">
+                    
+                </h3>
+                <div class="post-content-preview">
+                    1. java/dex/odex/oat/vdex的历史演变
+在应用开发时，Android代码的主要部分通常用Java编写；APK构建时，java源码首先用javac编译成Java字节码 ，然后Android通过使用d8编译器将此字节码转换为DEX文件（Dalvik字节码）。
+在Android 4.4（KitKat）之前，运行时使用JIT编译将Dalvik字节码转换为目标机器代码，JIT在每......
+                </div>
+            </a>
+            
+                <p class="post-meta" style="margin: 10px 0;">
+                    Posted by Rohex on
+                    2020-01-02
+                </p>
+                <div class="tags">
+                    
+                      <a href="/tags/#Android" title="Android">Android</a>
+                    
+                      <a href="/tags/#OAT" title="OAT">OAT</a>
+                    
+                      <a href="/tags/#ODEX" title="ODEX">ODEX</a>
+                    
+                      <a href="/tags/#VDEX" title="VDEX">VDEX</a>
+                    
+                </div>
+            
+
+        </div>
+        <hr>
+
+    
+
+    
+
+        <div class="post-preview">
+
+            <a href="/2020/01/02/android-bin-kits/">
+                <h2 class="post-title">
+                    <img class="top_logo" src="/img/tp.png"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android bin kits
+                </h2>
+                <h3 class="post-subtitle">
+                    
+                </h3>
+                <div class="post-content-preview">
+                    What？android_bin kits是一个工具集，仅围绕一个目的进行：分析Android系统中的可执行文件（dex、odex、oat、vdex）中有什么？  
+Why？Android native层代码经过编译后会有3种形式：静态库、动态库、elf可执行文件，而静态库最终会链接到动态库或可执行文件中去，最后android系统中native代码只会以动态库和elf可执行文件的形式存在，通......
+                </div>
+            </a>
+            
+                <p class="post-meta" style="margin: 10px 0;">
+                    Posted by Rohex on
+                    2020-01-02
+                </p>
+                <div class="tags">
+                    
+                      <a href="/tags/#工具" title="工具">工具</a>
+                    
+                      <a href="/tags/#逆向" title="逆向">逆向</a>
+                    
+                      <a href="/tags/#Android" title="Android">Android</a>
+                    
+                </div>
+            
+
+        </div>
+        <hr>
+
+    
+
+    
+
+        <div class="post-preview">
+
+            <a href="/2020/01/03/linux-exploits-ease-methods/">
+                <h2 class="post-title">
+                    <img class="top_logo" src="/img/tp.png"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;漏洞利用缓解措施
+                </h2>
+                <h3 class="post-subtitle">
+                    
+                </h3>
+                <div class="post-content-preview">
+                    操作系统安全防护
+ASLRASLR(Address space layout randomization，地址空间布局随机化)通过随机放置数据区域的地址空间来防止攻击者跳转到内存的特定位置。在windows上ASLR主要包括堆栈随机化、PEB与TEB随机化、映像随机化，windows系统上虽然xp时代就提出来了，但是从vista开始ASLR才真正发挥作用。在linux上ASLR主要包括栈地址......
+                </div>
+            </a>
+            
+                <p class="post-meta" style="margin: 10px 0;">
+                    Posted by Rohex on
+                    2020-01-03
+                </p>
+                <div class="tags">
+                    
+                      <a href="/tags/#漏洞" title="漏洞">漏洞</a>
+                    
+                      <a href="/tags/#ctf" title="ctf">ctf</a>
+                    
+                      <a href="/tags/#writeup" title="writeup">writeup</a>
+                    
+                      <a href="/tags/#exploits" title="exploits">exploits</a>
+                    
+                </div>
+            
+
+        </div>
+        <hr>
+
+    
+
+    
+
+        <div class="post-preview">
+
+            <a href="/2020/01/03/linux-exploits-ideas/">
+                <h2 class="post-title">
+                    <img class="top_logo" src="/img/tp.png"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;linux漏洞利用思路
+                </h2>
+                <h3 class="post-subtitle">
+                    
+                </h3>
+                <div class="post-content-preview">
+                    栈溢出-rop链待更新…
+堆漏洞利用
+普通溢出：溢出多个字节，覆盖下一个chunk结构，造成unlinkfirst chunk溢出覆盖second chunk的size、fd、bk，将size覆盖为0；释放first chunk时，ptmalloc会通过second chunk的尾部（通过second chunk size字段寻址）定位到second chunk下一个chunk的presiz......
+                </div>
+            </a>
+            
+                <p class="post-meta" style="margin: 10px 0;">
+                    Posted by Rohex on
+                    2020-01-03
+                </p>
+                <div class="tags">
+                    
+                      <a href="/tags/#漏洞" title="漏洞">漏洞</a>
+                    
+                      <a href="/tags/#ctf" title="ctf">ctf</a>
+                    
+                      <a href="/tags/#writeup" title="writeup">writeup</a>
+                    
+                      <a href="/tags/#exploits" title="exploits">exploits</a>
+                    
+                </div>
+            
+
+        </div>
+        <hr>
+
+    
+
+    
+
+        <div class="post-preview">
+
+            <a href="/2020/01/03/linux-exploits-tools/">
+                <h2 class="post-title">
+                    <img class="top_logo" src="/img/tp.png"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;pwn工具简介
+                </h2>
+                <h3 class="post-subtitle">
+                    
+                </h3>
+                <div class="post-content-preview">
+                    pwntoolspwntools是一个为CTF PWN题而开发的python库，可用来与本地目标或远程目标交互，生成符合编码的shellcode和payload，解析和搜寻elf文件，还有一个可以做内存泄漏的DynELF模块。（1）基础信息返回函数、符号虚拟地址（也许不真实，可以用来求相对偏移），可访问ELF文件中如字典信息：例如下例代码可访问plt表中write函数地址：    elf =......
+                </div>
+            </a>
+            
+                <p class="post-meta" style="margin: 10px 0;">
+                    Posted by Rohex on
+                    2020-01-03
+                </p>
+                <div class="tags">
+                    
+                      <a href="/tags/#漏洞" title="漏洞">漏洞</a>
+                    
+                      <a href="/tags/#ctf" title="ctf">ctf</a>
+                    
+                      <a href="/tags/#writeup" title="writeup">writeup</a>
+                    
+                      <a href="/tags/#exploits" title="exploits">exploits</a>
+                    
+                      <a href="/tags/#tools" title="tools">tools</a>
+                    
+                </div>
+            
+
+        </div>
+        <hr>
+
+    
+
+    
+
+
+
+<!-- Main Content -->
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+        <div class="post-preview">
+
+            <a href="/2020/01/04/rop-link-exploits/">
+                <h2 class="post-title">
+                    rop_link_exploits
+                </h2>
+                <h3 class="post-subtitle">
+                    
+                </h3>
+                <div class="post-content-preview">
+                    ...
+                </div>
+            </a>
+            
+                <p class="post-meta" style="margin: 10px 0;">
+                    Posted by Rohex on
+                    2020-01-04
+                </p>
+                <div class="tags">
+                    
+                </div>
+            
+
+        </div>
+        <hr>
+
+    
+
+
+
+<!-- Pager -->
+
+<ul class="pager">
+    
+    
+</ul>
+
+
+            </div>
+
+            <!-- Sidebar Container -->
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+        
+<!--
+<h5>SEARCH</h5>
+<div class="search-article" class="tags">
+	<input id="search-kw" type="text" name="search_article" placeholder="Enter keywords for search" />
+	<div class="search-img">
+		<img 
+			src="/img/search.png" 
+			alt="search" 
+			onMouseOver="this.src='/img/search-focus.png'" 
+			onMouseOut="this.src='/img/search.png'"/>
+	</div>
+</div>-->
+
+<h5>SEARCH</h5>
+<div id="site_search">
+	<div class="form-group">
+		<input type="text" id="local-search-input" name="q" results="0" placeholder="search" class="st-search-input st-default-search-input form-control"/>
+	</div>  
+	<div id="local-search-result"></div>
+</div>
+
+        <hr>
+    
+        <!-- Featured Tags -->
+
+<section>
+    <!-- no hr -->
+    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+            
+        
+            
+            <a href="/tags/#逆向" title="逆向" rel="2">逆向</a>
+            
+        
+            
+            <a href="/tags/#Android" title="Android" rel="2">Android</a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+            <a href="/tags/#漏洞" title="漏洞" rel="4">漏洞</a>
+            
+        
+            
+            <a href="/tags/#二进制" title="二进制" rel="2">二进制</a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+            <a href="/tags/#ctf" title="ctf" rel="3">ctf</a>
+            
+        
+            
+            <a href="/tags/#writeup" title="writeup" rel="3">writeup</a>
+            
+        
+            
+            <a href="/tags/#exploits" title="exploits" rel="3">exploits</a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+</section>
+
+        <hr>
+    
+        <!-- Short About -->
+<section class="visible-md visible-lg">
+    <h5><a href="/about/">ABOUT ME</a></h5>
+    <div class="short-about">
+
+        
+            <img id = "avatar_pic" src="/img/ironman-draw.png" />
+        
+
+        
+            <p>Welcome to visit, I&#39;m Rohex!</p>
+        
+
+        <!-- SNS Link -->
+        <ul class="list-inline">
+
+            
+                <li>
+                    <a target="_blank"  href="https://github.com/x-16xb">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </li>
+            
+
+            
+                <li>
+                    <a target="_blank" href="https://twitter.com/Rohex">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </li>
+            
+
+            
+                <li>
+                    <a target="_blank" href="https://www.facebook.com/Rohe">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </li>
+            
+
+            
+                <li>
+                    <a target="_blank" href="https://www.zhihu.com/people/Rohex">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa  fa-stack-1x fa-inverse">知</i>
+                        </span>
+                    </a>
+                </li>
+            
+
+            
+
+            
+
+            
+
+        </ul>
+    </div>
+</section>
+        <hr>
+    
+        
+  <h5>VISITORS</h5>
+  <div class="widget">
+    <span>
+    	Viewed <b><i><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></i></b> Times
+	</span>
+	<br/>
+	<span>
+		<b><i><span id="busuanzi_value_site_uv"><i class="fa fa-spinner fa-spin"></i></span></i></b> Visitors In Total
+	</span>
+  </div>
+
+        <hr>
+    
+        
+  <h5>RECENT POSTS</h5>
+  <div class="widget">
+    <ul>
+      
+        <li>
+          <a href="/2020/01/04/rop-link-exploits/">rop_link_exploits</a>
+        </li>
+      
+        <li>
+          <a href="/2020/01/03/linux-exploits-tools/">pwn工具简介</a>
+        </li>
+      
+        <li>
+          <a href="/2020/01/03/linux-exploits-ease-methods/">漏洞利用缓解措施</a>
+        </li>
+      
+        <li>
+          <a href="/2020/01/03/linux-exploits-ideas/">linux漏洞利用思路</a>
+        </li>
+      
+        <li>
+          <a href="/2020/01/03/elf-symbol-delay-bind/">ELF符号延迟绑定（动态符号的加载）</a>
+        </li>
+      
+    </ul>
+  </div>
+
+        <hr>
+    
+        <!-- Friends Blog -->
+
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+
+    
+        <li><a href="https://blog.csdn.net/" target="_blank">Rohex&#39;s Blog</a></li>
+    
+        <li><a href="#" target="_blank">Rohex&#39;s Web</a></li>
+    
+        <li><a href="https://github.com/x-16xb" target="_blank">Rohex&#39;s Github</a></li>
+    
+        <li><a href="#" target="_blank">Other</a></li>
+    
+</ul>
+
+        <hr>
+    
+        
+    <h5>ARCHIVES</h5>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">10</span></li></ul>
+    </div>
+
+        <hr>
+    
+        <!-- Categories -->
+
+        <hr>
+    
+</div>
+
+        
+    </div>
+</div>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/x-16xb">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/Rohex">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/Rohe">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/Rohex">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Rohex 2020 
+                    <br>
+                    Powered by 
+                    <a href="https://github.com/dusign/hexo-theme-snail" target="_blank" rel="noopener">
+                        <i>hexo-theme-snail</i>
+                    </a> | 
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0"
+                        width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=dusign&repo=hexo-theme-snail&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- Search -->
+
+<script src="/js/search.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://x-16xb.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Search -->
+
+    <script type="text/javascript">      
+        var search_path = "search.xml";
+        if (search_path.length == 0) {
+            search_path = "search.xml";
+        }
+    var path = "/" + search_path;
+    searchFunc(path, 'local-search-input', 'local-search-result');
+    </script>
+
+
+<!-- busuanzi -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+
+    
+        <!-- background effects start -->
+        
+
+        
+            <script type="text/javascript" src="/js/mouse-click.js" content='[&quot;🌱&quot;,&quot;just do it&quot;,&quot;🌾&quot;,&quot;🍀&quot;,&quot;don&#39;t give up&quot;,&quot;🍂&quot;,&quot;🌻&quot;,&quot;try it again&quot;,&quot;🍃&quot;,&quot;never say die&quot;,&quot;🌵&quot;,&quot;🌿&quot;,&quot;🌴&quot;]' color='[&quot;rgb(121,93,179)&quot; ,&quot;rgb(76,180,231)&quot; ,&quot;rgb(184,90,154)&quot; ,&quot;rgb(157,211,250)&quot; ,&quot;rgb(255,0,0)&quot; ,&quot;rgb(242,153,29)&quot; ,&quot;rgb(23,204,16)&quot; ,&quot;rgb(222,0,0)&quot; ,&quot;rgb(22,36,92)&quot; ,&quot;rgb(127,24,116)&quot; ,&quot;rgb(119,195,79)&quot; ,&quot;rgb(4,77,34)&quot; ,&quot;rgb(122,2,60)&quot;]'></script>
+        
+
+        <!-- background effects end -->
+    
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+
+</html>

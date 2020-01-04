@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="baidu-site-verification" content="093lY4ziMu" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="A hexo theme">
+    <meta name="keyword"  content="rohex, hexo-theme-snail">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!--<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>-->
+    <title>
+        
+          Glibc堆内存管理知识梳理 - Hexo-theme-snail
+        
+    </title>
+
+    <link rel="canonical" href="https://x-16xb.github.io/2020/01/03/ptmalloc2/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS --> 
+    
+        
+<link rel="stylesheet" href="/css/dusign-light.css">
+
+        
+<link rel="stylesheet" href="/css/dusign-common-light.css">
+
+        
+<link rel="stylesheet" href="/css/font-awesome.css">
+
+        
+<link rel="stylesheet" href="/css/toc.css">
+
+        <!-- background effects end -->
+    
+    
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    
+<link rel="stylesheet" href="/css/widget.css">
+
+
+    
+<link rel="stylesheet" href="/css/rocket.css">
+
+
+    
+<link rel="stylesheet" href="/css/signature.css">
+
+
+    
+<link rel="stylesheet" href="/css/fonts.googleapis.css">
+
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    
+        <!-- background effects start -->
+        
+        <!-- background effects end -->
+    
+
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            
+                background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('')
+                /*post*/
+            
+        
+    }
+    
+    #signature{
+        background-image: url('/img/signature/dusign.png');
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Glibc" title="Glibc">Glibc</a>
+                            
+                              <a class="tag" href="/tags/#ptmalloc2" title="ptmalloc2">ptmalloc2</a>
+                            
+                              <a class="tag" href="/tags/#unlink" title="unlink">unlink</a>
+                            
+                              <a class="tag" href="/tags/#堆分配" title="堆分配">堆分配</a>
+                            
+                        </div>
+                        <h1>Glibc堆内存管理知识梳理</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Rohex on
+                            2020-01-03
+                        </span>
+
+                        
+                            <div class="blank_box"></div>
+                            <span class="meta">
+                                Words <span class="post-count">3.6k</span> and
+                                Reading Time <span class="post-count">13</span> Minutes
+                            </span>
+                            <div class="blank_box"></div>
+                            <!-- 不蒜子统计 start -->
+                            <span class="meta">
+                                Viewed <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> Times
+                            </span>
+                            <!-- 不蒜子统计 end -->
+                        
+
+                    </div>
+                
+
+                </div>
+            </div>
+        </div>      
+    </div>
+
+    
+    <div class="waveWrapper">
+        <div class="wave wave_before" style="background-image: url('/img/wave-light.png')"></div>
+        <div class="wave wave_after" style="background-image: url('/img/wave-light.png')"></div>
+    </div>
+    
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Rohex的博客</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/photography/">Photography</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                    <li>
+                        <a href="https://blog.csdn.net/d_Nail" target="_blank">Chinese Blog</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h2><p>在读了<a href="https://paper.seebug.org/papers/Archive/refs/heap/glibc%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86ptmalloc%E6%BA%90%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90.pdf" target="_blank" rel="noopener">Ptmalloc2源代码分析</a>和阿里牛人文章<a href="https://yq.aliyun.com/articles/53850?spm=a2c4e.11153940.blogcont6274.13.57fc1dc2Pm9J3W" target="_blank" rel="noopener">Linux堆内存管理深入分析</a>后，本文以一种 <font color="#FF0000">有序的知识点摘要</font>形式重新梳理下堆内存管理知识，希望可以将堆内存管理知识点进行概括、总结、串联，本文适合对堆内存管理有一定零星了解，通过本文将知识点串起来。</p>
+<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><ol>
+<li><p>当前针对各大平台主要有如下几种堆内存管理机制：</p>
+<ul>
+<li>dlmalloc – General purpose allocator</li>
+<li><font color="#FF0000" face = "微软雅黑" size=3>ptmalloc2 – glibc </font></li>
+<li>jemalloc – FreeBSD, Firefox, Android5.0-</li>
+<li>tcmalloc – Google</li>
+<li>libumem – Solaris <p align="left">堆内存管理的核心目的是能够高效地分配和回收内存块(chunk)。</p>
+</li>
+</ul>
+</li>
+<li><p>首次malloc申请内存（小于128k，大内存由mmap系统函数直接分配），查看进程maps文件可看出分配了132kb的堆内存（使用brk申请），这132KB的堆空间叫做arena，主线程分配的叫做main arena。</p>
+</li>
+<li><p><strong>不是每次malloc申请内存都会用系统调用来映射内存，而是初次申请便映射一大块内存交由arena管理，由arena进行内存分配和回收。</strong>在主线程调用free之后：从内存布局可以看出程序的堆空间并没有被释放掉，而是由glibc的ptmalloc2使用arena结构进行管理。  </p>
+</li>
+<li><p>主线程和子线程有自己独立的arena，新线程会通过nmap分配一个新的arena，但arena数量有限制：<br>  &emsp;<em>For 32 bit systems:   Number of arena = 2 </em> number of cores + 1.<br>  &emsp;For 64 bit systems:   Number of arena = 8 <em> number of cores + 1.</em><br>当glibc能维护的arena个数已经达到上限，无法再为新线程分配新的arena，那么复用已存在的arena（遍历可用arena，lock成功后返回给线程，暂时无可用的会阻塞malloc操作直到可用）</p>
+</li>
+<li><p>main arena被分配的内存空间是连续的，当管理的空闲内存不够分配时，通过系统调用sbrk扩展heap，<strong>堆空间是向上增长的</strong>，sbrk只需将arena管理的最高地址增加即可；而thread arena管理的内存区域可能不连续，初始化时或每次空间不够时，都是系统使用mmap分配一块内存，为了让这些分离的堆块方便管理，ptmalloc2在使用_heap_info数据结构将其联系起来。</p>
+</li>
+<li><p>在ptmalloc2中，chunk是堆内存管理单元，有4种类型，除了按是否空闲分为allocated chunk和malloc_chunk，还有两个特殊类型的chunk：top chunk和Last remainder chunk，其中：</p>
+<ul>
+<li>Top Chunk<br>当一个chunk处于一个arena的最顶部(即最高内存地址处)的时候，就称之为top chunk。在系统当前的所有空闲chunk都无法满足用户请求的内存大小的时候，将此chunk当做一个应急消防员，分配给用户使用。如果top chunk的大小比用户请求的大小要大的话，就将该top chunk分作两部分：1）用户请求的chunk；2）剩余的部分成为新的top chunk。否则，就需要扩展heap或分配新的heap了，在main arena中通过sbrk扩展heap，而在thread arena中通过mmap分配新的heap。</li>
+<li>Last Remainder Chunk<br>Last remainder是另外一种特殊的chunk，当需要分配一个small chunk，但找不到合适的chunk，如果last remainder chunk的大小大于所需的small chunk大小，last remainder chunk被分裂成两个chunk，其中一个chunk返回给用户，另一个chunk变成新的last remainder chuk。  </li>
+</ul>
+</li>
+<li><p>到此为止，已经了解了arena、heaps、chunk的概念，现在可以通过两张图理解清楚它们之间的联系(<font size=2><strong>图引自阿里云栖社区文章<a href="https://yq.aliyun.com/articles/53850?spm=a2c4e.11153940.blogcont6274.13.57fc1dc2Pm9J3W" target="_blank" rel="noopener">《Linux堆内存管理深入分析》</a></strong></font>)：</p>
+<ul>
+<li><p><strong>main_arena</strong><br><img src="ptmalloc2_main_arena.png" alt="&quot;main arena&quot;"></p>
+<center> <font size=2 face="黑体">图1：main arena内存布局</font></center>  
+
+<ul>
+<li>左上角是arana数据结构，右侧是被arena管理的一片连续的内存块；  </li>
+<li>可以看出内存块被割裂成3种chunk：top chunk，空闲chunk(即malloc_chunk，为malloc机制主要管理的chunk)，和以分配chunk(allocted chunk)，<strong>Last remainder属于特殊的空闲chunk，是分配samall chunk时产生的剩余，其空间中的位置会随时变化</strong>；</li>
+<li>top chunk在arena管理内存空间的最高地址，在内存不够时，可以直接向上扩展。因此，main arena中不存在heaps；</li>
+<li>arena的主要业务就是组织管理空闲chunk，回收已分配的chunk，并在合适的时机合并被隔离成碎片的空闲chunk;     </li>
+</ul>
+</li>
+<li><p><strong>thread arena</strong><br><img src="ptmalloc2_thread_arena.png" alt="&quot;thread arena&quot;"><br><center> <font size=2 face="黑体">图2：thread arena内存布局</font></center></p>
+<ul>
+<li>这是一个包含2个heap的thread arena，heap的起始地址处是heap_info数据结构，用来连接多个heap；</li>
+<li>线程arena数据结构在第一个heap中，增加新的heap会改变arena数据结构中top chunk的指向（新分配的heap地址更高）；</li>
+<li>另外，main arena数据结构是存放在libc.so的可写数据段中。   </li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="数据结构：chunk、bin及arena"><a href="#数据结构：chunk、bin及arena" class="headerlink" title="数据结构：chunk、bin及arena"></a>数据结构：chunk、bin及arena</h2><ol>
+<li><p>堆内存管理单元chunk<strong>设计为方便分配和回收的数据结构</strong>，ptmalloc2将整个堆内存空间分成了连续的、大小不一的chunk（大小必须为8的倍数），下图为chunk基础数据结构：<br><img src="ptmalloc_freechunk.png" alt="&quot;chunk format&quot;">   </p>
+<center><font size=2 face="黑体">图3：chunk的数据结构</font></center>  
+
+<ul>
+<li><strong>pre chunk size</strong><br>前一个chunk的大小。只有在前一个chunk是空闲时才有用，在ptmalloc2做内存管理时索引前一个空闲chunk的地址（前一个chunk是空闲，<font color="#FF0000">如果当前chunk被释放时，会需要前一个空闲chunk的地址去完成两个连续空闲chunk的合并</font>）；前一个chunk被分配时，可以做前一个chunk的用户空间。 </li>
+<li><strong>chunk size</strong><br>当前chunk大小，包括给malloc调用者使用的空间和做内存管理的消耗空间，大小是8字节对齐，所以后3位可以作其它用。 </li>
+<li><strong>N/M/P标志位</strong><br>N (NON_MAIN_ARENA)：表示当前chunk是否是thread arena。<br>M (IS_MMAPPED)：表示当前chunk是否是通过mmap系统调用产生的。<br>P (PREV_INUSE): 表示前一个chunk是否为allocated。</li>
+<li><p><strong>fd和bk</strong><br>chunk空闲时会有，分别表示chunk双向链表的前向指针和后项指针。   </p>
+<p><strong>空闲chunk的数据结构定义：</strong><br>struct malloc_chunk {<br>INTERNAL_SIZE_T      prev_size;  /<em> Size of previous chunk (if free).  </em>/<br>INTERNAL_SIZE_T      size;       /<em> Size in bytes, including overhead. </em>/<br>// 这两个指针只在free chunk中存在<br> struct malloc_chunk<em> fd;<br> struct malloc_chunk</em> bk;<br>// 这两个指针只在large chunk中存在<br> struct malloc_chunk<em> fd_nextsize;<br>struct malloc_chunk</em> bk_nextsize;<br>};<br> <strong>通过大小去检索和操作前后chunk称为隐式链表技术。</strong></p>
+</li>
+</ul>
+</li>
+<li>组织空闲chunk的双向链表bin<br><font color="#FF0000">ptmalloc2最核心的目的</font>是管理空闲的chunk，已分配的chunk不做管理，主要业务是<font color="#FF0000">为malloc调用者提供最合适的空闲chunk，回收free后的chunk</font>，因此设计了<strong>4种链表数组</strong>（数组元素存放chunk类型的链表指针）来满足用户对chunk不同大小的请求，这个链表数组被称为bins，每个数组元素为一个bin，每种不同的bins管理不同类型chunk，分别为：<ul>
+<li>Fast bins：用如其名，是最快的分配方式，数量为10个bin，chunk size分别为16到80字节；</li>
+<li>Unsorted bin： 暂不作分类的chunk都放在该bin下，数量为1个；</li>
+<li>Small bins: 小于512个字节时，分配该类bin下chunk，62个；</li>
+<li>Large bins: 大于512字节时。分配该类bin下的chunk，63个。<br>&lt;/br&gt;      </li>
+</ul>
+</li>
+<li><p>管理空闲chunk的arena结构<br> struct malloc_state<br> {<br>   mutex_t mutex;  /<em> Serialize access.  </em>/</p>
+<p>   int flags;   /<em> Flags (formerly in max_fast).  </em>/</p>
+<p>   <font color="#FF0000">mfastbinptr fastbinsY[NFASTBINS];</font>  /<em> Fastbins </em>/</p>
+<p>   <font color="#FF0000">mchunkptr top;</font> /<em> Base of the topmost chunk — not otherwise kept in a bin </em>/</p>
+<p>   <font color="#FF0000">mchunkptr last_remainder;</font> /<em> The remainder from the most recent split of a small request </em>/</p>
+<p>   <font color="#FF0000">mchunkptr bins[NBINS * 2 - 2];</font>  /<em> Normal bins packed as described above </em>/</p>
+<p>   unsigned int binmap[BINMAPSIZE];  /<em> Bitmap of bins </em>/</p>
+<p>   struct malloc_state <em>next;  /</em> Linked list */</p>
+<p>   struct malloc_state <em>next_free;   /</em> Linked list for free arenas.  */</p>
+<p>   INTERNAL_SIZE_T system_mem;   /<em> Memory allocated from the system in this arena.  </em>/</p>
+<p>   INTERNAL_SIZE_T max_system_mem;</p>
+<p> };  </p>
+<ul>
+<li>arena管理内存的数据结构为malloc state；</li>
+<li>fastbinsY即为上文提到的fastbins，里面存放的是可用来快速分配的小chunk；</li>
+<li>top指向top chunk，top chunk是一种特殊的空闲chunk，也用来分配内存；</li>
+<li>last_remainder和top chunk一样；</li>
+<li>bins保存了usorted bin，samall bins, large bins，其中    bins[0]为unsorted bin，<br>bin[1:63]为small bin,bins[63:127]为large bin。</li>
+</ul>
+</li>
+</ol>
+<h2 id="堆块的分配、释放与合并"><a href="#堆块的分配、释放与合并" class="headerlink" title="堆块的分配、释放与合并"></a>堆块的分配、释放与合并</h2><h3 id="堆块的分配"><a href="#堆块的分配" class="headerlink" title="堆块的分配"></a>堆块的分配</h3><ol>
+<li>首先将用户请求大小转化为实际需要分配的堆块大小，加上chunk结构中presize和size大小；</li>
+<li>如果chunk_size &lt;= max_fast（默认64B），则尝试在fastbins中取所需大小的chunk返回，分配结束；（优先分配fastbins）</li>
+<li>如果2不满足，如果chunk_size &lt;= 521B（smallbins范围），则尝试在smallbins中取所需大小的chunk返回，分配结束(是否会切分较大的smallbin，将剩余部分放到unsorted bin，last remainder chunk指向剩余的chunk。)；</li>
+<li>如果fastbins和smallbins都不满足，则首先合并fastbins，将合并后的chunk链入unsorted bin；然后遍历unsorted bin，如果满足：a.只有一个chunk;b.该chunk在上次分配被使用过；c.chunk大小属于small范围;d.chunk大于所需分配大小，则切分该chunk，分配结束，否则遍历unsorted bin将chunk放到对应的samll和large bins；<br><img src="ptmalloc2_chunk_judge.png" alt="ptmalloc2_chunk_judge">   </li>
+<li>到了这一步，fastbins、smallbins、unsortedbin都无合适的chunk分配，其中fastbins、unsortedbi已被清空。这时需从large bins中分配，从large bins中按照“smallest-first，best-fit”原则，找一个合适的 chunk，从中划分一块所需大小的chunk，并将剩下的部分链接回到bins中；</li>
+<li>如果搜索fast bins和bins都没有找到合适的chunk，那么就需要操作top chunk来进行分配了。判断top chunk大小是否满足所需chunk的大小，如果是，则从top chunk中分出一块来。否则转到下一步。</li>
+<li>到了这一步，说明top chunk也不能满足分配要求，所以，于是就有了两个选择: 如果是主分配区，调用sbrk()，增加top chunk大小；如果是非主分配区，调用mmap来分配一个新的sub-heap，增加top chunk大小；或者使用mmap()来直接分配。在这里，需要依靠chunk的大小来决定到底使用哪种方法。判断所需分配的chunk大小是否大于等于 mmap分配阈值，如果是的话，则转下一步，调用mmap分配，否则跳到第12步，增加top chunk 的大小。 </li>
+</ol>
+<h3 id="堆块的释放"><a href="#堆块的释放" class="headerlink" title="堆块的释放"></a>堆块的释放</h3><ol>
+<li>free() 函数接受一个指向分配区域的指针作为参数，释放该指针所指向的chunk。</li>
+<li>判断传入的指针是否为0，如果为0，则什么都不做，直接return。否则转下一步。</li>
+<li>判断所需释放的chunk是否为mmaped chunk，如果是，则调用munmap()释放mmaped chunk，解除内存空间映射，该该空间不再有效。如果开启了mmap分配阈值的动态调整机制，并且当前回收的chunk大小大于mmap分配阈值，将mmap分配阈值设置为该chunk的大小，将mmap收缩阈值设定为mmap分配阈值的2倍，释放完成，否则跳到下一步。</li>
+<li>判断chunk的大小和所处的位置，若chunk_size &lt;= max_fast，并且chunk并不位于heap的顶部，也就是说并不与top chunk相邻，则将chunk放到fast bins中，chunk放入到fast bins中时，并不修改该chunk使用状态位P。也不与相邻的chunk进行合并。只是放进去，如此而已。这一步做完之后释放便结束了，程序从free()函数中返回。（因为与top chunk相邻的小chunk也和 top chunk进行合并，所以这里不仅需要判断大小，还需要判断相邻情况）</li>
+<li>判断前一个chunk是否处在使用中，如果前一个块也是空闲块，则合并。</li>
+<li>判断当前释放chunk的下一个块是否为top chunk（相较于当前chunk的高地址方向）（top chunk从低地址开始划分，向高地址扩展），如果是，与top chunk合并，并更新top chunk的大小等信息。</li>
+<li>如下一个不是top chunk，判断下一个chunk是否处在使用中，如果下一个chunk也是空闲的，则合并，并将合并后的chunk放到unsorted bin中；</li>
+<li>判断合并后的chunk 的大小是否大于FASTBIN_CONSOLIDATION_THRESHOLD（默认64KB），如果是的话，则会触发进行fast bins的合并操作，fast bins中的chunk将被遍历，并与相邻的空闲chunk进行合并，合并后的chunk会被放到unsorted bin中。fast bins将变为空，操作完成之后转下一步。</li>
+<li>判断top chunk的大小是否大于mmap收缩阈值（默认为128KB），如果是的话，对于主分配区，则会试图归还top chunk中的一部分给操作系统。但是最先分配的128KB空间是不会归还的，ptmalloc 会一直管理这部分内存，用于响应用户的分配请求；如果为非主分配区，会进行sub-heap收缩，将top chunk的一部分返回给操作系统，如果top chunk为整个sub-heap，会把整个sub-heap还回给操作系统。  </li>
+</ol>
+<h3 id="堆块的合并"><a href="#堆块的合并" class="headerlink" title="堆块的合并"></a>堆块的合并</h3><ol>
+<li>堆块释放时，会判断当前 chunk 的相邻 chunk 是否为空闲状态，若是则会进行堆合并。合并时会将空闲 chunk 从 bin 中 unlink，并将合并后的 chunk 添加到 unsorted bin 中。堆合并分为向前合并和向后合并。  </li>
+<li>向后合并：  <ul>
+<li>判断当前chunk的P(PREV_INUSE)标志位是否为0（0代表前一个chunk状态是free）；</li>
+<li>前一个chunk若为空闲，则将当前chunk指向前一个，更新chunk size，释放前一个chunk；</li>
+<li>更新合并后的chunk到bin中。</li>
+</ul>
+</li>
+<li>向前合并：<ul>
+<li>通过next-&gt;next-&gt;prev_inuse判断next chunk是否为空闲；</li>
+<li>若为空闲，则更新合并后chunk大小，unlink next chunk；</li>
+<li>更新合并后的chunk到bin中。</li>
+</ul>
+</li>
+<li><p>unlink：  </p>
+<ul>
+<li>dlmlloc或ptmalloc2中定义unlink如下：<br>/<em> Take a chunk off a bin list </em>/<br>#define unlink(P, BK, FD) {<br>FD = P-&gt;fd;<br>BK = P-&gt;bk;<br>FD-&gt;bk = BK;<br>BK-&gt;fd = FD;<br>}  </li>
+<li>Glibc 增加了安全检查：<br>/<em> Take a chunk off a bin list </em>/<br>#define unlink(P, BK, FD) {<br>FD = P-&gt;fd;<br>BK = P-&gt;bk;<br>if (__builtin_expect (FD-&gt;bk != P || BK-&gt;fd != P, 0))<br>malloc_printerr (check_action, “corrupted double-linked list”, P);<br>else {<br>FD-&gt;bk = BK;<br>BK-&gt;fd = FD;        …<br>}<br>}  </li>
+</ul>
+<p><strong>bin链中该chunk的前chunk的bk和后chunk的fd都应该指向P，最后unlink被改写的也只能是存放P指针的前chunk-&gt;bk与后chunk-&gt;fd。</strong> </p>
+</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://yq.aliyun.com/articles/53850?spm=a2c4e.11153940.blogcont6274.13.57fc1dc2Pm9J3W" target="_blank" rel="noopener">Linux堆内存管理深入分析 (上)</a><br><a href="https://yq.aliyun.com/articles/53852?spm=a2c4e.11153940.0.0.6fe7644bYxaIT1" target="_blank" rel="noopener">Linux堆内存管理深入分析 (下)</a><br><a href="https://paper.seebug.org/papers/Archive/refs/heap/glibc%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86ptmalloc%E6%BA%90%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90.pdf" target="_blank" rel="noopener">Glibc内存管理 Ptmalloc2源代码分析 庄明强</a>  </p>
+<h2 id="作者声明"><a href="#作者声明" class="headerlink" title="作者声明"></a><strong>作者声明</strong></h2><pre><code>本文版权归作者所有，旨在技术交流使用。未经作者同意禁止转载，转载后需在文章页面明显位置给出原文连接，否则相关责任自行承担。
+</code></pre>
+                
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2020/01/03/elf-symbol-delay-bind/" data-toggle="tooltip" data-placement="top" title="ELF符号延迟绑定（动态符号的加载）">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2020/01/02/android-bin-kits/" data-toggle="tooltip" data-placement="top" title="android bin kits">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                <!-- tip start -->
+                
+
+                
+                <div class="comment_notes">
+                    <p>
+                        This is copyright.
+                    </p>
+                </div>
+                
+                <!-- tip end -->
+
+                <!-- Sharing -->
+                
+                <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                <!--  css & js -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!-- Sharing -->
+
+                <!-- gitment start -->
+                
+                <hr>
+                <div id="blog_comments"></div>
+
+<!--
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+-->
+<!--
+<link rel="stylesheet" href="/css/gitment.css">
+<script type="text/javascript" src="/js/gitment.js"></script>
+-->
+
+<script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css"/>
+
+<!--
+<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+<script src="https://billts.site/js/gitment.js"></script>
+-->
+
+<script>
+const myTheme = {
+  render(state, instance) {
+    const container = document.createElement('div')
+    container.lang = "en-US"
+    container.className = 'gitment-container gitment-root-container'
+    
+     // your custom component
+    container.appendChild(instance.renderSomething(state, instance))
+    
+    container.appendChild(instance.renderHeader(state, instance))
+    container.appendChild(instance.renderComments(state, instance))
+    container.appendChild(instance.renderEditor(state, instance))
+    //container.appendChild(instance.renderFooter(state, instance))
+    return container
+  },
+  renderSomething(state, instance) {
+    const container = document.createElement('div')
+    container.lang = "en-US"
+    container.className = 'hello_visitor'
+    if (state.user.login) {
+      container.innerText = `Hello ${state.user.login}, Welcome to comment system`
+    }
+    return container
+  }
+}
+
+
+const gitment = new Gitment({
+    id: 'Fri Jan 03 2020 16:59:30 GMT+0800', // optional
+    owner: "",
+    repo: "",
+    oauth: {
+      client_id: "",
+      client_secret: "",
+    },
+    theme: myTheme,
+    // ...
+    // For more available options, check out the documentation below
+  })
+  
+  gitment.render('blog_comments')
+  // or
+  // gitment.render(document.getElementById('comments'))
+  // or
+  // document.body.appendChild(gitment.render())
+</script>
+                
+                <!-- gitment end -->
+
+                <!-- 来必力City版安装代码 -->
+                
+                <!-- City版安装代码已完成 -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Glibc" title="Glibc">Glibc</a>
+                        
+                          <a class="tag" href="/tags/#ptmalloc2" title="ptmalloc2">ptmalloc2</a>
+                        
+                          <a class="tag" href="/tags/#unlink" title="unlink">unlink</a>
+                        
+                          <a class="tag" href="/tags/#堆分配" title="堆分配">堆分配</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/" target="_blank">Rohex&#39;s Blog</a></li>
+                    
+                        <li><a href="#" target="_blank">Rohex&#39;s Web</a></li>
+                    
+                        <li><a href="https://github.com/x-16xb" target="_blank">Rohex&#39;s Github</a></li>
+                    
+                        <li><a href="#" target="_blank">Other</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+
+
+<style  type="text/css">
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/x-16xb">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/Rohex">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/Rohe">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/Rohex">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Rohex 2020 
+                    <br>
+                    Powered by 
+                    <a href="https://github.com/dusign/hexo-theme-snail" target="_blank" rel="noopener">
+                        <i>hexo-theme-snail</i>
+                    </a> | 
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0"
+                        width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=dusign&repo=hexo-theme-snail&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- Search -->
+
+<script src="/js/search.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://x-16xb.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Search -->
+
+    <script type="text/javascript">      
+        var search_path = "search.xml";
+        if (search_path.length == 0) {
+            search_path = "search.xml";
+        }
+    var path = "/" + search_path;
+    searchFunc(path, 'local-search-input', 'local-search-result');
+    </script>
+
+
+<!-- busuanzi -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+
+    
+        <!-- background effects start -->
+        
+
+        
+            <script type="text/javascript" src="/js/mouse-click.js" content='[&quot;🌱&quot;,&quot;just do it&quot;,&quot;🌾&quot;,&quot;🍀&quot;,&quot;don&#39;t give up&quot;,&quot;🍂&quot;,&quot;🌻&quot;,&quot;try it again&quot;,&quot;🍃&quot;,&quot;never say die&quot;,&quot;🌵&quot;,&quot;🌿&quot;,&quot;🌴&quot;]' color='[&quot;rgb(121,93,179)&quot; ,&quot;rgb(76,180,231)&quot; ,&quot;rgb(184,90,154)&quot; ,&quot;rgb(157,211,250)&quot; ,&quot;rgb(255,0,0)&quot; ,&quot;rgb(242,153,29)&quot; ,&quot;rgb(23,204,16)&quot; ,&quot;rgb(222,0,0)&quot; ,&quot;rgb(22,36,92)&quot; ,&quot;rgb(127,24,116)&quot; ,&quot;rgb(119,195,79)&quot; ,&quot;rgb(4,77,34)&quot; ,&quot;rgb(122,2,60)&quot;]'></script>
+        
+
+        <!-- background effects end -->
+    
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+
+</html>
