@@ -109,7 +109,7 @@
                     <div class="site-heading">
                         <h1>Rohex的博客</h1>
                         <!--<hr class="small">-->
-                        <span id="subdusi" class="subheading">大家好！我是Rohex，没错！是Robin的三次方，我希望自己能比Robin更优秀！</span>
+                        <span id="subdusi" class="subheading">大家好！我是Rohex，没错！是Robin的SI次方，我希望自己能比Robin更优秀！</span>
                     </div>
                 
 
@@ -247,87 +247,6 @@
 
         <div class="post-preview">
 
-            <a href="/2020/01/03/elf-symbol-delay-bind/">
-                <h2 class="post-title">
-                    <img class="top_logo" src="/img/tp.png"/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;ELF符号延迟绑定（动态符号的加载）
-                </h2>
-                <h3 class="post-subtitle">
-                    
-                </h3>
-                <div class="post-content-preview">
-                    过程总结首次调用会跳到动态符号的.plt表项的首条指令；该指令会跳转到该符号的.got表项地址，初始时该处存放的是.plt表项的第二条指令；.plt第二条指令会压入该符号的表项号，然后跳入.plt首地址；.plt首地址将got表中的第二项压入栈中（即本模块对应的ID），然后跳转到got表项的第三项执行（ _dl_runtime_resolve函数）； _dl_runtime_resolve函......
-                </div>
-            </a>
-            
-                <p class="post-meta" style="margin: 10px 0;">
-                    Posted by Rohex on
-                    2020-01-03
-                </p>
-                <div class="tags">
-                    
-                      <a href="/tags/#ELF" title="ELF">ELF</a>
-                    
-                      <a href="/tags/#延迟绑定" title="延迟绑定">延迟绑定</a>
-                    
-                      <a href="/tags/#符号加载" title="符号加载">符号加载</a>
-                    
-                </div>
-            
-
-        </div>
-        <hr>
-
-    
-
-    
-
-        <div class="post-preview">
-
-            <a href="/2020/01/03/ptmalloc2/">
-                <h2 class="post-title">
-                    <img class="top_logo" src="/img/tp.png"/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;Glibc堆内存管理知识梳理
-                </h2>
-                <h3 class="post-subtitle">
-                    
-                </h3>
-                <div class="post-content-preview">
-                    前言：在读了Ptmalloc2源代码分析和阿里牛人文章Linux堆内存管理深入分析后，本文以一种 有序的知识点摘要形式重新梳理下堆内存管理知识，希望可以将堆内存管理知识点进行概括、总结、串联，本文适合对堆内存管理有一定零星了解，通过本文将知识点串起来。
-基础概念
-当前针对各大平台主要有如下几种堆内存管理机制：
-
-dlmalloc – General purpose allocator
-ptm......
-                </div>
-            </a>
-            
-                <p class="post-meta" style="margin: 10px 0;">
-                    Posted by Rohex on
-                    2020-01-03
-                </p>
-                <div class="tags">
-                    
-                      <a href="/tags/#Glibc" title="Glibc">Glibc</a>
-                    
-                      <a href="/tags/#ptmalloc2" title="ptmalloc2">ptmalloc2</a>
-                    
-                      <a href="/tags/#unlink" title="unlink">unlink</a>
-                    
-                      <a href="/tags/#堆分配" title="堆分配">堆分配</a>
-                    
-                </div>
-            
-
-        </div>
-        <hr>
-
-    
-
-    
-
-        <div class="post-preview">
-
             <a href="/2020/01/02/binsign/">
                 <h2 class="post-title">
                     <img class="top_logo" src="/img/tp.png"/>
@@ -409,6 +328,93 @@ ptm......
 
         <div class="post-preview">
 
+            <a href="/2020/01/04/rop-link-exploits/">
+                <h2 class="post-title">
+                    <img class="top_logo" src="/img/tp.png"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;rop链攻击原理与思路(x86/x64)
+                </h2>
+                <h3 class="post-subtitle">
+                    
+                </h3>
+                <div class="post-content-preview">
+                    rop链的基础原理
+rop是Return Oriented Programming（面向返回的编程）的缩写；
+根据函数调用规则，当刚跳转到其它函数去执行时，从被调用者的视角看：栈顶是返回地址，紧接着是自己的参数（X86架构下）；  
+然后，被调用者会对栈空间进行一系列操作，保存寄存器和存储临时变量，但在即将退出时会清理自己消耗的栈空间，以使其回到自己被调用前的栈空间，保持栈平衡；  
+最后，......
+                </div>
+            </a>
+            
+                <p class="post-meta" style="margin: 10px 0;">
+                    Posted by Rohex on
+                    2020-01-04
+                </p>
+                <div class="tags">
+                    
+                      <a href="/tags/#漏洞" title="漏洞">漏洞</a>
+                    
+                      <a href="/tags/#Rop Chain" title="Rop Chain">Rop Chain</a>
+                    
+                      <a href="/tags/#CTF" title="CTF">CTF</a>
+                    
+                      <a href="/tags/#栈溢出" title="栈溢出">栈溢出</a>
+                    
+                </div>
+            
+
+        </div>
+        <hr>
+
+    
+
+    
+
+        <div class="post-preview">
+
+            <a href="/2020/01/03/ptmalloc2/">
+                <h2 class="post-title">
+                    <img class="top_logo" src="/img/tp.png"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Glibc堆内存管理知识梳理
+                </h2>
+                <h3 class="post-subtitle">
+                    
+                </h3>
+                <div class="post-content-preview">
+                    前言：在读了Ptmalloc2源代码分析和阿里牛人文章Linux堆内存管理深入分析后，本文以一种 有序的知识点摘要形式重新梳理下堆内存管理知识，希望可以将堆内存管理知识点进行概括、总结、串联，本文适合对堆内存管理有一定零星了解，通过本文将知识点串起来。
+基础概念
+当前针对各大平台主要有如下几种堆内存管理机制：
+
+dlmalloc – General purpose allocator
+ptm......
+                </div>
+            </a>
+            
+                <p class="post-meta" style="margin: 10px 0;">
+                    Posted by Rohex on
+                    2020-01-03
+                </p>
+                <div class="tags">
+                    
+                      <a href="/tags/#Glibc" title="Glibc">Glibc</a>
+                    
+                      <a href="/tags/#ptmalloc2" title="ptmalloc2">ptmalloc2</a>
+                    
+                      <a href="/tags/#unlink" title="unlink">unlink</a>
+                    
+                      <a href="/tags/#堆溢出" title="堆溢出">堆溢出</a>
+                    
+                </div>
+            
+
+        </div>
+        <hr>
+
+    
+
+    
+
+        <div class="post-preview">
+
             <a href="/2020/01/02/android-exec-files/">
                 <h2 class="post-title">
                     <img class="top_logo" src="/img/tp.png"/>
@@ -437,6 +443,43 @@ ptm......
                       <a href="/tags/#ODEX" title="ODEX">ODEX</a>
                     
                       <a href="/tags/#VDEX" title="VDEX">VDEX</a>
+                    
+                </div>
+            
+
+        </div>
+        <hr>
+
+    
+
+    
+
+        <div class="post-preview">
+
+            <a href="/2020/01/03/elf-symbol-delay-bind/">
+                <h2 class="post-title">
+                    <img class="top_logo" src="/img/tp.png"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;ELF符号延迟绑定（动态符号的加载）
+                </h2>
+                <h3 class="post-subtitle">
+                    
+                </h3>
+                <div class="post-content-preview">
+                    过程总结首次调用会跳到动态符号的.plt表项的首条指令；该指令会跳转到该符号的.got表项地址，初始时该处存放的是.plt表项的第二条指令；.plt第二条指令会压入该符号的表项号，然后跳入.plt首地址；.plt首地址将got表中的第二项压入栈中（即本模块对应的ID），然后跳转到got表项的第三项执行（ _dl_runtime_resolve函数）； _dl_runtime_resolve函......
+                </div>
+            </a>
+            
+                <p class="post-meta" style="margin: 10px 0;">
+                    Posted by Rohex on
+                    2020-01-03
+                </p>
+                <div class="tags">
+                    
+                      <a href="/tags/#ELF" title="ELF">ELF</a>
+                    
+                      <a href="/tags/#延迟绑定" title="延迟绑定">延迟绑定</a>
+                    
+                      <a href="/tags/#符号加载" title="符号加载">符号加载</a>
                     
                 </div>
             
@@ -488,17 +531,18 @@ Why？Android native层代码经过编译后会有3种形式：静态库、动�
 
         <div class="post-preview">
 
-            <a href="/2020/01/03/linux-exploits-ease-methods/">
+            <a href="/2020/01/03/linux-exploits-ideas/">
                 <h2 class="post-title">
                     <img class="top_logo" src="/img/tp.png"/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;漏洞利用缓解措施
+                    &nbsp;&nbsp;&nbsp;&nbsp;linux漏洞利用思路
                 </h2>
                 <h3 class="post-subtitle">
                     
                 </h3>
                 <div class="post-content-preview">
-                    操作系统安全防护
-ASLRASLR(Address space layout randomization，地址空间布局随机化)通过随机放置数据区域的地址空间来防止攻击者跳转到内存的特定位置。在windows上ASLR主要包括堆栈随机化、PEB与TEB随机化、映像随机化，windows系统上虽然xp时代就提出来了，但是从vista开始ASLR才真正发挥作用。在linux上ASLR主要包括栈地址......
+                    栈溢出-rop链待更新…
+堆漏洞利用
+普通溢出：溢出多个字节，覆盖下一个chunk结构，造成unlinkfirst chunk溢出覆盖second chunk的size、fd、bk，将size覆盖为0；释放first chunk时，ptmalloc会通过second chunk的尾部（通过second chunk size字段寻址）定位到second chunk下一个chunk的presiz......
                 </div>
             </a>
             
@@ -528,18 +572,17 @@ ASLRASLR(Address space layout randomization，地址空间布局随机化)通过
 
         <div class="post-preview">
 
-            <a href="/2020/01/03/linux-exploits-ideas/">
+            <a href="/2020/01/03/linux-exploits-ease-methods/">
                 <h2 class="post-title">
                     <img class="top_logo" src="/img/tp.png"/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;linux漏洞利用思路
+                    &nbsp;&nbsp;&nbsp;&nbsp;漏洞利用缓解措施
                 </h2>
                 <h3 class="post-subtitle">
                     
                 </h3>
                 <div class="post-content-preview">
-                    栈溢出-rop链待更新…
-堆漏洞利用
-普通溢出：溢出多个字节，覆盖下一个chunk结构，造成unlinkfirst chunk溢出覆盖second chunk的size、fd、bk，将size覆盖为0；释放first chunk时，ptmalloc会通过second chunk的尾部（通过second chunk size字段寻址）定位到second chunk下一个chunk的presiz......
+                    操作系统安全防护
+ASLRASLR(Address space layout randomization，地址空间布局随机化)通过随机放置数据区域的地址空间来防止攻击者跳转到内存的特定位置。在windows上ASLR主要包括堆栈随机化、PEB与TEB随机化、映像随机化，windows系统上虽然xp时代就提出来了，但是从vista开始ASLR才真正发挥作用。在linux上ASLR主要包括栈地址......
                 </div>
             </a>
             
@@ -606,8 +649,6 @@ ASLRASLR(Address space layout randomization，地址空间布局随机化)通过
 
     
 
-    
-
 
 
 <!-- Main Content -->
@@ -629,34 +670,6 @@ ASLRASLR(Address space layout randomization，地址空间布局随机化)通过
     
 
     
-
-    
-
-        <div class="post-preview">
-
-            <a href="/2020/01/04/rop-link-exploits/">
-                <h2 class="post-title">
-                    rop_link_exploits
-                </h2>
-                <h3 class="post-subtitle">
-                    
-                </h3>
-                <div class="post-content-preview">
-                    ...
-                </div>
-            </a>
-            
-                <p class="post-meta" style="margin: 10px 0;">
-                    Posted by Rohex on
-                    2020-01-04
-                </p>
-                <div class="tags">
-                    
-                </div>
-            
-
-        </div>
-        <hr>
 
     
 
@@ -729,7 +742,7 @@ ASLRASLR(Address space layout randomization，地址空间布局随机化)通过
             
         
             
-            <a href="/tags/#漏洞" title="漏洞" rel="4">漏洞</a>
+            <a href="/tags/#漏洞" title="漏洞" rel="5">漏洞</a>
             
         
             
@@ -760,6 +773,12 @@ ASLRASLR(Address space layout randomization，地址空间布局随机化)通过
         
             
             <a href="/tags/#exploits" title="exploits" rel="3">exploits</a>
+            
+        
+            
+        
+            
+        
             
         
             
@@ -868,7 +887,7 @@ ASLRASLR(Address space layout randomization，地址空间布局随机化)通过
     <ul>
       
         <li>
-          <a href="/2020/01/04/rop-link-exploits/">rop_link_exploits</a>
+          <a href="/2020/01/04/rop-link-exploits/">rop链攻击原理与思路(x86/x64)</a>
         </li>
       
         <li>
@@ -876,11 +895,11 @@ ASLRASLR(Address space layout randomization，地址空间布局随机化)通过
         </li>
       
         <li>
-          <a href="/2020/01/03/linux-exploits-ease-methods/">漏洞利用缓解措施</a>
+          <a href="/2020/01/03/linux-exploits-ideas/">linux漏洞利用思路</a>
         </li>
       
         <li>
-          <a href="/2020/01/03/linux-exploits-ideas/">linux漏洞利用思路</a>
+          <a href="/2020/01/03/linux-exploits-ease-methods/">漏洞利用缓解措施</a>
         </li>
       
         <li>
