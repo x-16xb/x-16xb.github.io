@@ -2,72 +2,93 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://x-16xb.github.io/2020/01/04/rop-link-exploits/</loc>
+    <loc>https://x-16xb.github.io/2020/01/18/AddressSanityChecker/</loc>
     
-    <lastmod>2020-01-05T11:35:51.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://x-16xb.github.io/2020/01/03/ptmalloc2/</loc>
-    
-    <lastmod>2020-01-05T11:35:51.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://x-16xb.github.io/2020/01/03/elf-symbol-delay-bind/</loc>
-    
-    <lastmod>2020-01-05T11:35:51.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://x-16xb.github.io/2020/01/03/linux-exploits-ease-methods/</loc>
-    
-    <lastmod>2020-01-05T11:35:51.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://x-16xb.github.io/2020/01/03/linux-exploits-tools/</loc>
-    
-    <lastmod>2020-01-03T12:02:26.562Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://x-16xb.github.io/2020/01/03/linux-exploits-ideas/</loc>
-    
-    <lastmod>2020-01-03T12:02:26.550Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://x-16xb.github.io/2020/01/02/bin-vul-check/</loc>
-    
-    <lastmod>2020-01-02T12:58:20.517Z</lastmod>
+    <lastmod>2020-01-18T10:06:51.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://x-16xb.github.io/2020/01/02/binsign/</loc>
     
-    <lastmod>2020-01-02T12:58:20.505Z</lastmod>
+    <lastmod>2020-01-18T09:14:32.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://x-16xb.github.io/2020/01/11/binianry-analysis-in-deep-learning/</loc>
+    
+    <lastmod>2020-01-14T11:47:42.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://x-16xb.github.io/2020/01/10/Neural-Network-based-Graph-Embedding-for-Cross-Platform/</loc>
+    
+    <lastmod>2020-01-14T11:33:27.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://x-16xb.github.io/2020/01/02/bin-vul-check/</loc>
+    
+    <lastmod>2020-01-14T11:32:21.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://x-16xb.github.io/2020/01/03/ptmalloc2/</loc>
+    
+    <lastmod>2020-01-14T11:32:21.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://x-16xb.github.io/2020/01/02/android-exec-files/</loc>
     
-    <lastmod>2020-01-02T12:58:20.497Z</lastmod>
+    <lastmod>2020-01-14T11:32:21.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://x-16xb.github.io/2020/01/03/elf-symbol-delay-bind/</loc>
+    
+    <lastmod>2020-01-14T11:32:21.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://x-16xb.github.io/2020/01/02/android-bin-kits/</loc>
     
-    <lastmod>2020-01-02T12:58:20.485Z</lastmod>
+    <lastmod>2020-01-14T11:32:21.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://x-16xb.github.io/2020/01/03/linux-exploits-ideas/</loc>
+    
+    <lastmod>2020-01-14T11:32:21.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://x-16xb.github.io/2020/01/03/linux-exploits-ease-methods/</loc>
+    
+    <lastmod>2020-01-14T11:32:21.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://x-16xb.github.io/2020/01/03/linux-exploits-tools/</loc>
+    
+    <lastmod>2020-01-14T11:32:21.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://x-16xb.github.io/2020/01/04/rop-link-exploits/</loc>
+    
+    <lastmod>2020-01-05T11:35:51.000Z</lastmod>
     
   </url>
   

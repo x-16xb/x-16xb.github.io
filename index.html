@@ -250,14 +250,14 @@
             <a href="/2020/01/02/binsign/">
                 <h2 class="post-title">
                     <img class="top_logo" src="/img/tp.png"/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;binsign
+                    &nbsp;&nbsp;&nbsp;&nbsp;binsign（关于二进制代码定位和特征搜索的项目）
                 </h2>
                 <h3 class="post-subtitle">
                     
                 </h3>
                 <div class="post-content-preview">
-                    它是什么？binsign是一个尝试解析二进制文件中函数常量或代码引用、函数原型、栈空间分布的项目；为什么要做这个项目呢？形象地说，我想做一个可以分析和提取一个二进制文件DNA的东西（DNA有些夸张了，我只是为了更直接地阐述目的（捂脸），也许叫做二进制函数摘要更合适）。
-技术相关的项目？一个被编译成机器码的函数，它有什么特征可以唯一表征这个函数呢？让我们来看看当前是否有相关研究或项目可以提供下......
+                    它是什么？binsign是一个能够分析二进制代码特征的开源项目，它可以在不同平台中通过强特征定位到特定的二进制函数中，并可以搜索感兴趣的二进制特性。这些特征包括但不限于常量、引用、函数原型、局部变量、特殊指令等。更形象地说，我想做一个可以分析和提取二进制文件DNA的东西，并且可以在这个二进制文件的历史变化中掌握它的进化信息和二进制特点。  
+技术相关的项目？一个被编译成机器码的函数，它有什么......
                 </div>
             </a>
             
@@ -274,6 +274,45 @@
                       <a href="/tags/#函数摘要" title="函数摘要">函数摘要</a>
                     
                       <a href="/tags/#相似性比对" title="相似性比对">相似性比对</a>
+                    
+                </div>
+            
+
+        </div>
+        <hr>
+
+    
+
+    
+
+        <div class="post-preview">
+
+            <a href="/2020/01/11/binianry-analysis-in-deep-learning/">
+                <h2 class="post-title">
+                    <img class="top_logo" src="/img/tp.png"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;机器学习在二进制代码相似性分析中的应用
+                </h2>
+                <h3 class="post-subtitle">
+                    
+                </h3>
+                <div class="post-content-preview">
+                    开篇&emsp;&emsp;本文介绍了3篇二进制代码相似性分析的顶会技术，他们体现了二进制代码相似性分析中一些最先进的思想。第一篇是Genius技术，是在《基于神经网络图嵌入的跨平台二进制代码相似性检测》论文中作为对比技术介绍，它首次使用图嵌入这个机器学习的概念去做二进制代码相似性分析，它涉及到了聚类算法、图比对、密码本等技术，也为后两篇论文打下了基础；第二篇是Gemini技术，它使用了更先......
+                </div>
+            </a>
+            
+                <p class="post-meta" style="margin: 10px 0;">
+                    Posted by Rohex on
+                    2020-01-11
+                </p>
+                <div class="tags">
+                    
+                      <a href="/tags/#神经网络" title="神经网络">神经网络</a>
+                    
+                      <a href="/tags/#图嵌入" title="图嵌入">图嵌入</a>
+                    
+                      <a href="/tags/#代码相似性" title="代码相似性">代码相似性</a>
+                    
+                      <a href="/tags/#二进制分析" title="二进制分析">二进制分析</a>
                     
                 </div>
             
@@ -415,6 +454,85 @@ ptm......
 
         <div class="post-preview">
 
+            <a href="/2020/01/18/AddressSanityChecker/">
+                <h2 class="post-title">
+                    <img class="top_logo" src="/img/tp.png"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;A Fast Address Sanity Checker（谷歌AddressSanity论文翻译）
+                </h2>
+                <h3 class="post-subtitle">
+                    
+                </h3>
+                <div class="post-content-preview">
+                    摘要对于C和C ++等编程语言，包括缓冲区溢出和堆内存的释放后重用等内存访问错误仍然是一个严重的问题。存在许多内存错误检测器，但大多数检测器要么运行缓慢，要么检测到的错误类型有限，或者两者兼而有之。&emsp;&emsp;本文介绍了一种新的内存错误检测器AddressSanitizer。我们的工具能够发现堆、堆栈和全局对象的越界访问，以及释放后重用的错误。它采用了专门的内存分配器和代码插桩，......
+                </div>
+            </a>
+            
+                <p class="post-meta" style="margin: 10px 0;">
+                    Posted by Rohex on
+                    2020-01-18
+                </p>
+                <div class="tags">
+                    
+                      <a href="/tags/#地址清洗" title="地址清洗">地址清洗</a>
+                    
+                      <a href="/tags/#地址消毒" title="地址消毒">地址消毒</a>
+                    
+                      <a href="/tags/#谷歌技术" title="谷歌技术">谷歌技术</a>
+                    
+                      <a href="/tags/#fuzzing" title="fuzzing">fuzzing</a>
+                    
+                </div>
+            
+
+        </div>
+        <hr>
+
+    
+
+    
+
+        <div class="post-preview">
+
+            <a href="/2020/01/10/Neural-Network-based-Graph-Embedding-for-Cross-Platform/">
+                <h2 class="post-title">
+                    <img class="top_logo" src="/img/tp.png"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Neural Network-based Graph Embedding for Cross-Platform Binary Code Similarity Detection(翻译)
+                </h2>
+                <h3 class="post-subtitle">
+                    
+                </h3>
+                <div class="post-content-preview">
+                    基于神经网络图嵌入的跨平台二进制代码相似性检测作者： Xiaojun Xu, …, 宋乐， 宋晓东
+摘要&emsp;&emsp;跨平台二进制代码相似性检测的关键在于：检测二进制函数是否相似，它具有很多安全应用场景。例如，代码剽窃检测，恶意软件识别，搜索漏洞。现有方法依赖于近似图匹配算法，这种算法不可避免地速度慢，有时不准确，并且难以适应新任务。为了解决这些问题，在这项工作中，我们提出了一种基......
+                </div>
+            </a>
+            
+                <p class="post-meta" style="margin: 10px 0;">
+                    Posted by Rohex on
+                    2020-01-10
+                </p>
+                <div class="tags">
+                    
+                      <a href="/tags/#神经网络" title="神经网络">神经网络</a>
+                    
+                      <a href="/tags/#图嵌入" title="图嵌入">图嵌入</a>
+                    
+                      <a href="/tags/#代码相似性" title="代码相似性">代码相似性</a>
+                    
+                      <a href="/tags/#漏洞检测" title="漏洞检测">漏洞检测</a>
+                    
+                </div>
+            
+
+        </div>
+        <hr>
+
+    
+
+    
+
+        <div class="post-preview">
+
             <a href="/2020/01/02/android-exec-files/">
                 <h2 class="post-title">
                     <img class="top_logo" src="/img/tp.png"/>
@@ -527,128 +645,6 @@ Why？Android native层代码经过编译后会有3种形式：静态库、动�
 
     
 
-    
-
-        <div class="post-preview">
-
-            <a href="/2020/01/03/linux-exploits-ideas/">
-                <h2 class="post-title">
-                    <img class="top_logo" src="/img/tp.png"/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;linux漏洞利用思路
-                </h2>
-                <h3 class="post-subtitle">
-                    
-                </h3>
-                <div class="post-content-preview">
-                    栈溢出-rop链待更新…
-堆漏洞利用
-普通溢出：溢出多个字节，覆盖下一个chunk结构，造成unlinkfirst chunk溢出覆盖second chunk的size、fd、bk，将size覆盖为0；释放first chunk时，ptmalloc会通过second chunk的尾部（通过second chunk size字段寻址）定位到second chunk下一个chunk的presiz......
-                </div>
-            </a>
-            
-                <p class="post-meta" style="margin: 10px 0;">
-                    Posted by Rohex on
-                    2020-01-03
-                </p>
-                <div class="tags">
-                    
-                      <a href="/tags/#漏洞" title="漏洞">漏洞</a>
-                    
-                      <a href="/tags/#ctf" title="ctf">ctf</a>
-                    
-                      <a href="/tags/#writeup" title="writeup">writeup</a>
-                    
-                      <a href="/tags/#exploits" title="exploits">exploits</a>
-                    
-                </div>
-            
-
-        </div>
-        <hr>
-
-    
-
-    
-
-        <div class="post-preview">
-
-            <a href="/2020/01/03/linux-exploits-ease-methods/">
-                <h2 class="post-title">
-                    <img class="top_logo" src="/img/tp.png"/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;漏洞利用缓解措施
-                </h2>
-                <h3 class="post-subtitle">
-                    
-                </h3>
-                <div class="post-content-preview">
-                    操作系统安全防护
-ASLRASLR(Address space layout randomization，地址空间布局随机化)通过随机放置数据区域的地址空间来防止攻击者跳转到内存的特定位置。在windows上ASLR主要包括堆栈随机化、PEB与TEB随机化、映像随机化，windows系统上虽然xp时代就提出来了，但是从vista开始ASLR才真正发挥作用。在linux上ASLR主要包括栈地址......
-                </div>
-            </a>
-            
-                <p class="post-meta" style="margin: 10px 0;">
-                    Posted by Rohex on
-                    2020-01-03
-                </p>
-                <div class="tags">
-                    
-                      <a href="/tags/#漏洞" title="漏洞">漏洞</a>
-                    
-                      <a href="/tags/#ctf" title="ctf">ctf</a>
-                    
-                      <a href="/tags/#writeup" title="writeup">writeup</a>
-                    
-                      <a href="/tags/#exploits" title="exploits">exploits</a>
-                    
-                </div>
-            
-
-        </div>
-        <hr>
-
-    
-
-    
-
-        <div class="post-preview">
-
-            <a href="/2020/01/03/linux-exploits-tools/">
-                <h2 class="post-title">
-                    <img class="top_logo" src="/img/tp.png"/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;pwn工具简介
-                </h2>
-                <h3 class="post-subtitle">
-                    
-                </h3>
-                <div class="post-content-preview">
-                    pwntoolspwntools是一个为CTF PWN题而开发的python库，可用来与本地目标或远程目标交互，生成符合编码的shellcode和payload，解析和搜寻elf文件，还有一个可以做内存泄漏的DynELF模块。（1）基础信息返回函数、符号虚拟地址（也许不真实，可以用来求相对偏移），可访问ELF文件中如字典信息：例如下例代码可访问plt表中write函数地址：    elf =......
-                </div>
-            </a>
-            
-                <p class="post-meta" style="margin: 10px 0;">
-                    Posted by Rohex on
-                    2020-01-03
-                </p>
-                <div class="tags">
-                    
-                      <a href="/tags/#漏洞" title="漏洞">漏洞</a>
-                    
-                      <a href="/tags/#ctf" title="ctf">ctf</a>
-                    
-                      <a href="/tags/#writeup" title="writeup">writeup</a>
-                    
-                      <a href="/tags/#exploits" title="exploits">exploits</a>
-                    
-                      <a href="/tags/#tools" title="tools">tools</a>
-                    
-                </div>
-            
-
-        </div>
-        <hr>
-
-    
-
 
 
 <!-- Main Content -->
@@ -679,6 +675,10 @@ ASLRASLR(Address space layout randomization，地址空间布局随机化)通过
 
 <ul class="pager">
     
+    
+        <li class="next">
+            <a href="/archives/2/">Older Posts &rarr;</a>
+        </li>
     
 </ul>
 
@@ -791,6 +791,30 @@ ASLRASLR(Address space layout randomization，地址空间布局随机化)通过
         
             
         
+            
+            <a href="/tags/#神经网络" title="神经网络" rel="2">神经网络</a>
+            
+        
+            
+            <a href="/tags/#图嵌入" title="图嵌入" rel="2">图嵌入</a>
+            
+        
+            
+            <a href="/tags/#代码相似性" title="代码相似性" rel="2">代码相似性</a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
     </div>
 </section>
 
@@ -887,23 +911,23 @@ ASLRASLR(Address space layout randomization，地址空间布局随机化)通过
     <ul>
       
         <li>
+          <a href="/2020/01/18/AddressSanityChecker/">A Fast Address Sanity Checker（谷歌AddressSanity论文翻译）</a>
+        </li>
+      
+        <li>
+          <a href="/2020/01/11/binianry-analysis-in-deep-learning/">机器学习在二进制代码相似性分析中的应用</a>
+        </li>
+      
+        <li>
+          <a href="/2020/01/10/Neural-Network-based-Graph-Embedding-for-Cross-Platform/">Neural Network-based Graph Embedding for Cross-Platform Binary Code Similarity Detection(翻译)</a>
+        </li>
+      
+        <li>
           <a href="/2020/01/04/rop-link-exploits/">rop链攻击原理与思路(x86/x64)</a>
         </li>
       
         <li>
           <a href="/2020/01/03/linux-exploits-tools/">pwn工具简介</a>
-        </li>
-      
-        <li>
-          <a href="/2020/01/03/linux-exploits-ideas/">linux漏洞利用思路</a>
-        </li>
-      
-        <li>
-          <a href="/2020/01/03/linux-exploits-ease-methods/">漏洞利用缓解措施</a>
-        </li>
-      
-        <li>
-          <a href="/2020/01/03/elf-symbol-delay-bind/">ELF符号延迟绑定（动态符号的加载）</a>
         </li>
       
     </ul>
@@ -932,7 +956,7 @@ ASLRASLR(Address space layout randomization，地址空间布局随机化)通过
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">10</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">13</span></li></ul>
     </div>
 
         <hr>

@@ -282,7 +282,7 @@
 <li>HOOK技术既可以作为触发漏洞代码方法的辅助，也可以作为主要方式检测，不过需要找到函数符号或者其它可以hook的点。例如，补丁在原漏洞代码中增加了某个函数的调用，就可以hook漏洞调用代码和新增函数，查看补丁是否增加。目前经常使用的hook工具一般的hook点都是函数符号，这里就不多介绍了，用起来还是很方便的。这里重点推广一下<strong><a href="https://software.intel.com/en-us/articles/pin-a-dynamic-binary-instrumentation-tool" target="_blank" rel="noopener">Intel Pin</a></strong>，<strong>强大而深入骨髓的二进制插桩工具</strong>，它可以进行指令级别、基本块级别、函数级别、执行流级别的插桩，而且提供了各个插桩级别中很多用来过滤插桩点的接口，例如只对JMP指令插桩跟踪。执行流级别被称为trace，它的粒度其实也是基本块，不过它不是对整个二进制文件进行插桩，它只会动态的对执行路径中的基本块进行插桩，这大大节约了插桩的时间代价和空间消耗。（通过在插桩点注册一个回调函数就可以实现hook，这就是插桩和hook的联系，所以通过Intel Pin可以实现更多粒度的hook）</li>
 <li>使用模拟执行技术可以<strong>单独执行函数，甚至片段的指令序列</strong>，例如<a href="https://github.com/unicorn-engine/unicorn" target="_blank" rel="noopener">unicorn</a>或<a href="https://github.com/cea-sec/miasm" target="_blank" rel="noopener">miasm</a>都提供了这样的方法，京东的二进制分析工具<a href="https://sec.thief.one/article_content?a_id=e81bf95af26f0ff148ba2d0df5e0b376" target="_blank" rel="noopener">麒麟</a>基于unicorn貌似把该能力进行了更友好的包装。这很实用，因为在目标检测设备上运行动态检测程序经常由于系统权限和环境依赖问题，使得检测方法失效，甚至代码都难以接触。例如嵌入式设备的内核代码，root权限也无法进行插桩检测(代码空间的rwx属性root应该是改不了的)，在真实设备上严格的权限体系，内核空间可不是我们能随意游走的。如果将目标代码镜像拉下来放到模拟器中执行（也可以把内核提出来），可以使用模拟器提供的丰富的hook功能和栈操作功能，让多数函数满足执行环境，例如hook其他函数调用等，例如入参条件，例如数据段访问条件，进而可以触发漏洞代码。污点跟踪技术是检测漏洞触发的一种辅助技术，漏洞的发生多是由于不合预期的操作了某块内存，这时可以通过污点跟踪技术检测漏洞触发的效果。 </li>
 </ol>
-<h2 id="作者声明"><a href="#作者声明" class="headerlink" title="作者声明"></a><strong>作者声明</strong></h2><pre><code>本文版权归作者所有，旨在技术交流使用。未经作者同意禁止转载，转载后需在文章页面明显位置给出原文连接，否则相关责任自行承担。
+<h2 id="作者声明"><a href="#作者声明" class="headerlink" title="作者声明"></a><strong>作者声明</strong></h2><pre><code>本文版权归作者(rohex)所有，旨在技术交流使用。未经作者同意禁止转载，转载后需在文章页面明显位置给出原文连接，否则相关责任自行承担。
 </code></pre>
                 
                 <hr>
@@ -295,7 +295,7 @@
                     
                     
                     <li class="next">
-                        <a href="/2020/01/02/binsign/" data-toggle="tooltip" data-placement="top" title="binsign">Next Post &rarr;</a>
+                        <a href="/2020/01/02/binsign/" data-toggle="tooltip" data-placement="top" title="binsign（关于二进制代码定位和特征搜索的项目）">Next Post &rarr;</a>
                     </li>
                     
                 </ul>

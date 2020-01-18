@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://x-16xb.github.io/2020/01/18/AddressSanityChecker/</loc>
+    <lastmod>2020-01-18</lastmod>
+  </url>  <url>
+    <loc>https://x-16xb.github.io/2020/01/02/binsign/</loc>
+    <lastmod>2020-01-18</lastmod>
+  </url>  <url>
+    <loc>https://x-16xb.github.io/2020/01/11/binianry-analysis-in-deep-learning/</loc>
+    <lastmod>2020-01-14</lastmod>
+  </url>  <url>
+    <loc>https://x-16xb.github.io/2020/01/10/Neural-Network-based-Graph-Embedding-for-Cross-Platform/</loc>
+    <lastmod>2020-01-14</lastmod>
+  </url>  <url>
+    <loc>https://x-16xb.github.io/2020/01/02/android-bin-kits/</loc>
+    <lastmod>2020-01-14</lastmod>
+  </url>  <url>
+    <loc>https://x-16xb.github.io/2020/01/02/android-exec-files/</loc>
+    <lastmod>2020-01-14</lastmod>
+  </url>  <url>
+    <loc>https://x-16xb.github.io/2020/01/02/bin-vul-check/</loc>
+    <lastmod>2020-01-14</lastmod>
+  </url>  <url>
     <loc>https://x-16xb.github.io/2020/01/03/elf-symbol-delay-bind/</loc>
-    <lastmod>2020-01-05</lastmod>
+    <lastmod>2020-01-14</lastmod>
   </url>  <url>
     <loc>https://x-16xb.github.io/2020/01/03/linux-exploits-ease-methods/</loc>
-    <lastmod>2020-01-05</lastmod>
+    <lastmod>2020-01-14</lastmod>
+  </url>  <url>
+    <loc>https://x-16xb.github.io/2020/01/03/linux-exploits-ideas/</loc>
+    <lastmod>2020-01-14</lastmod>
+  </url>  <url>
+    <loc>https://x-16xb.github.io/2020/01/03/linux-exploits-tools/</loc>
+    <lastmod>2020-01-14</lastmod>
   </url>  <url>
     <loc>https://x-16xb.github.io/2020/01/03/ptmalloc2/</loc>
-    <lastmod>2020-01-05</lastmod>
+    <lastmod>2020-01-14</lastmod>
   </url>  <url>
     <loc>https://x-16xb.github.io/2020/01/04/rop-link-exploits/</loc>
     <lastmod>2020-01-05</lastmod>
-  </url>  <url>
-    <loc>https://x-16xb.github.io/2020/01/03/linux-exploits-tools/</loc>
-    <lastmod>2020-01-03</lastmod>
-  </url>  <url>
-    <loc>https://x-16xb.github.io/2020/01/03/linux-exploits-ideas/</loc>
-    <lastmod>2020-01-03</lastmod>
-  </url>  <url>
-    <loc>https://x-16xb.github.io/2020/01/02/bin-vul-check/</loc>
-    <lastmod>2020-01-02</lastmod>
-  </url>  <url>
-    <loc>https://x-16xb.github.io/2020/01/02/binsign/</loc>
-    <lastmod>2020-01-02</lastmod>
-  </url>  <url>
-    <loc>https://x-16xb.github.io/2020/01/02/android-exec-files/</loc>
-    <lastmod>2020-01-02</lastmod>
-  </url>  <url>
-    <loc>https://x-16xb.github.io/2020/01/02/android-bin-kits/</loc>
-    <lastmod>2020-01-02</lastmod>
   </url>
 </urlset>

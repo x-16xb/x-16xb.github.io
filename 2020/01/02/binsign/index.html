@@ -16,7 +16,7 @@
     <!--<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>-->
     <title>
         
-          binsign - Hexo-theme-snail
+          binsign（关于二进制代码定位和特征搜索的项目） - Hexo-theme-snail
         
     </title>
 
@@ -118,7 +118,7 @@
                               <a class="tag" href="/tags/#相似性比对" title="相似性比对">相似性比对</a>
                             
                         </div>
-                        <h1>binsign</h1>
+                        <h1>binsign（关于二进制代码定位和特征搜索的项目）</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by Rohex on
@@ -128,7 +128,7 @@
                         
                             <div class="blank_box"></div>
                             <span class="meta">
-                                Words <span class="post-count">2.1k</span> and
+                                Words <span class="post-count">2.2k</span> and
                                 Reading Time <span class="post-count">7</span> Minutes
                             </span>
                             <div class="blank_box"></div>
@@ -268,19 +268,25 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="它是什么？"><a href="#它是什么？" class="headerlink" title="它是什么？"></a>它是什么？</h2><p>binsign是一个尝试解析二进制文件中函数常量或代码引用、函数原型、栈空间分布的项目；为什么要做这个项目呢？形象地说，我想做一个可以分析和提取一个二进制文件DNA的东西（DNA有些夸张了，我只是为了更直接地阐述目的（捂脸），也许叫做二进制函数摘要更合适）。</p>
+                <h2 id="它是什么？"><a href="#它是什么？" class="headerlink" title="它是什么？"></a>它是什么？</h2><p><strong>binsign</strong>是一个能够分析二进制代码特征的开源项目，它可以在不同平台中通过<strong>强特征</strong>定位到特定的二进制函数中，并可以搜索感兴趣的二进制特性。这些特征包括但不限于常量、引用、函数原型、局部变量、特殊指令等。更形象地说，我想做一个可以分析和提取二进制文件DNA的东西，并且可以在这个二进制文件的历史变化中掌握它的进化信息和二进制特点。  </p>
 <h2 id="技术相关的项目？"><a href="#技术相关的项目？" class="headerlink" title="技术相关的项目？"></a>技术相关的项目？</h2><p>一个被编译成机器码的函数，它有什么特征可以唯一表征这个函数呢？让我们来看看当前是否有相关研究或项目可以提供下思路。</p>
-<h3 id="BinDiff"><a href="#BinDiff" class="headerlink" title="BinDiff"></a>BinDiff</h3><p>BinDiff是第一个要介绍的工具,这个工具在二进制补丁比对领域上享有盛名，最早由恶意软件分析工具厂商zynamics开发并作为商业工具发布，后由google收购并开源。BinDiff所使用的算法不是依赖于函数基本块的实际内容，而是使用基于图的方法表征可执行文件函数：调用图CG（call graph）和流程图CFG（control-flow graph），CG表示方法（函数）在整个程序中的调用关系，图中的节点是方法，边表示调用关系；CFG表示一个方法内的程序执行流，图中的节点是语句（指令），边表示执行流。</p>
+<h3 id="BinDiff"><a href="#BinDiff" class="headerlink" title="BinDiff"></a>BinDiff</h3><p>BinDiff是第一个要介绍的工具,它是用来做二进制代码相似性分析。这个工具在二进制补丁比对领域上享有盛名，最早由恶意软件分析工具厂商zynamics开发并作为商业工具发布，后由google收购并开源。BinDiff所使用的算法不是依赖于函数基本块的实际内容，而是使用基于图的方法表征可执行文件函数：调用图CG（call graph）和流程图CFG（control-flow graph），CG表示方法（函数）在整个程序中的调用关系，图中的节点是方法，边表示调用关系；CFG表示一个方法内的程序执行流，图中的节点是语句（指令），边表示执行流。</p>
 <h3 id="KARTA"><a href="#KARTA" class="headerlink" title="KARTA"></a>KARTA</h3><p>KARTA是以色列安全公司CheckPoint开源的一个IDA插件，用于识别和匹配给定二进制文件中的开源库。它的大致思路是先从开源库中提取二进制代码特征，然后去匹配目标二进制文件。这个地方我们重点关注它所提取的二进制代码特征，它介绍中提到的代码特征有【跳转表，代码段中的字符串和数字常量（主要存在ARM中），全局字符串，全局指针】。另外有2个点也值得关注下1）时间代价的瓶颈主要是IDA，分析TeamViewer整个过程大约花费了2个小时（相当大的程序，其中包含143,000多个函数）；2）为了弥补IDA对函数快识别的不准确，应用了Random-Forest（随机森林）分类器来识别函数的开头和结尾，结果得到了很大的提高。</p>
 <h3 id="Binmap"><a href="#Binmap" class="headerlink" title="Binmap"></a>Binmap</h3><p>Binmap是Quarkslab开源的一个系统扫描程序，它通过遍历一个系统或系统镜像的所有文件，查找程序、库并收集各种信息，例如依赖项、符号等，为系统建立一个散列和信息数据库。目标之一是提供包含多个系统数据库的一种仓库，并更新数据库以跟踪二进制系统的发展。Binmap是一个很宏伟的项目，我的理解是它想做一个二进制版的github commits管理。LIEF是为Binmap提供二进制分析的基础工具，也是Quarkslab另一个开源项目，它就是提供各种系统架构下的elf文件的解析和修改，也可以用来hook。但是可解析数据和readelf能力差不多，只是些elf信息读取和展示，没有做进一步的高级分析。不过有一点非常值得赞的是，它不但支持x86/x64、ARM这类纯二进制代码，它也支持Android系统里java编译出的DEX、ODEX、VDEX、OAT二进制文件的解析。而且，项目首页对Android可执行文件的描述非常清晰（在此吐槽下Android系统的java类可执行文件真是个变化无常的渣男,不过LIEF懂它）。</p>
 <h3 id="Abidiff"><a href="#Abidiff" class="headerlink" title="Abidiff"></a>Abidiff</h3><p>Abidiff是GNU开源项目libabigail的一个附带工具，它比较两个ELF共享库的应用程序二进制接口（ABI，Application Binary Interface），并打印告警信息。 这个工具的主要目标在于检查两个二进制文件是否有影响接口兼容性的变化。它所分析的二进制接口特征都是属于ABI范畴,例如符号接口的增加或删除，或许也会比较接口的参数变化（看着太粗粒度就没在深究），带有DWARF格式的调试信息下更加准确。</p>
-<p><strong>从以上4种涉及二进制接口特征分析的工具来看</strong>：BinDiff基于图的二进制使用较为抽象的方法表征函数，舍弃了一些更为直观简单的信息，diff结果抽象（当然最终结果只是一个相似度的百分比，这个倒是简单），但是我并不想整的这么玄乎，我想找出一些大家可以理解的特征；KARTA的二进制特征看起来很好理解和描述，但是很多二进制函数可能没有类似的特征，而且这种特征也不够唯一。不过它只是想去识别一个开源库，其实不需要提取太多特征，所以特征方面不用追求太多太细；Binmap对二进制特征的分析太浅了，仅仅靠readelf的分析能力，粒度也比较粗，它的粒度不是函数，而是二进制文件；Abidiff虽然是分析的粒度是二进制函数，但分析的也比较浅，也是readelf的分析级别。</p>
-<p><strong><em>总之，没有能满足我内心的工具。</em></strong></p>
-<h2 id="我心目中的样子？"><a href="#我心目中的样子？" class="headerlink" title="我心目中的样子？"></a>我心目中的样子？</h2><p><strong>1.分析一个二进制文件，正确识别出所有函数块；</strong><br><strong>2.抽象函数的强特征和弱特征，其中：</strong><br>1）强特征可以唯一表征该函数，用于快速定位该函数；<br>2）弱特征用于描述函数的其他特性，用于分析函数的变化；<br>3）强特征和弱特征都可由一组特征表示，例如需要几个维度共同确定该二进制函数；<br><strong>4.特征有以下：</strong><br>1）函数原型，包括参数和返回；<br>2）常量字符串、常量数据、全局变量、静态变量的引用；<br>3）代码引用（coderef_to）、代码调用（函数内部代码流程，调用的函数），一定程度上能代表函数的CG和CFG；<br>4）栈空间分布，局部变量信息；<br><strong><em>特征在分析阶段不区分强弱，最后在整个二进制文件中根据检查单个特征或组合特征在该二进制文件的唯一性，区分强、弱特征。</em></strong></p>
+<p><strong>从以上4种涉及二进制接口特征分析的工具来看</strong>：  </p>
+<ol>
+<li>BinDiff提取函数CFG图，然后通过图对比去做二进制代码的相似性分析，特征是CFG，结果是相似与否。其特征和结果对我来说都不够细致和具体，无法借鉴；  </li>
+<li>KARTA的二进制特征看起来很好理解和描述，但是很多二进制函数可能没有类似的特征，而且这种特征也不够唯一。不过它只是想去识别一个开源库，其实不需要提取太多特征，所以特征方面不用追求太多太细。<strong>不过，它提出的有些特征我会考虑提取，作为二进制特性描述</strong> ；  </li>
+<li>Binmap对二进制特征的分析太浅了，仅仅靠readelf的分析能力，粒度也比较粗，它的粒度不是函数，而是二进制文件；  </li>
+<li>Abidiff虽然分析的粒度是二进制函数，但分析的也比较浅，也是readelf的分析级别。  </li>
+</ol>
+<p><strong>我的目的是二进制代码的特征表示和特征搜索，其特征都是可被解读的代码特性。目前，还没有能满足我内心的工具。</strong></p>
+<h2 id="我心目中的样子？"><a href="#我心目中的样子？" class="headerlink" title="我心目中的样子？"></a>我心目中的样子？</h2><p><strong>1.分析一个二进制文件，正确识别出所有函数块；</strong><br><strong>2.抽象函数的强特征和弱特征，其中：</strong><br>1）强特征可以唯一表征该函数，用于快速定位该函数；<br>2）弱特征用于描述函数的其他特性，用于分析函数的变化；<br>3）强特征和弱特征都可由一组特征表示，例如需要几个维度共同确定该二进制函数，称为特征向量；<br><strong>4.特征有以下：</strong><br>1）函数原型，包括参数和返回；<br>2）常量字符串、常量数据、全局变量、静态变量的引用；<br>3）代码引用（coderef_to）、代码调用（函数内部代码流程，调用的函数），一定程度上能代表函数的CG和CFG；<br>4）栈空间分布，局部变量信息；<br><strong><em>特征在分析阶段不区分强弱，最后在整个二进制文件中根据检查单个特征或组合特征在该二进制文件的唯一性，区分强、弱特征。</em></strong></p>
 <h2 id="技术选型？"><a href="#技术选型？" class="headerlink" title="技术选型？"></a>技术选型？</h2><p>我是想站在巨人的肩膀上，用最小的工作量实现最有用的功能。熟悉二进制的人这时候也明白多数的基础分析能力IDA都可以满足，不过经过一番研究后我放弃了它。有这么几个原因：<br>1）它部分功能不能用，例如获取函数参数的python接口，笔者实验过多次返回总是错误的；<br>2）分析太慢了，这点就是KARTA工具苦恼的地方；<br>3）不是开源，Linux版本难以获取，free版本不支持那么多的分析（这也是最重要的，如果不考虑速度和开源性，在windows上实现个插件是最快的方式）；<br>4）最重要的一个原因是，因为工作中遇到的问题，我踏出了从零开始的第一步，那就继续干下去吧。另外说一下Ghidra（NSA 2019年初开源的一个类似于IDA的反编译工具），我也尝试用了下。不过它太慢了，比ida慢估计有10倍了；而且文档特别差，我先弃了它。<br>最终我用了readelf和objdump两个工具作为基础，我没有完全从零开始，毕竟也不需要。readelf满足了我对elf文件解析的需求，objdump帮助我反汇编了各个架构的代码；这样我只需要去扫描汇编代码去实现更高级的分析功能，这样我也能更接近elf文件和汇编的原理，这种探索也会给人带来乐趣。也许依赖shell命令实现有些low了，不过至少还有GNU binutils（readelf和objdump属于其项目工具）和elfutils库可以去替代。</p>
 <h2 id="目前实现"><a href="#目前实现" class="headerlink" title="目前实现"></a>目前实现</h2><p>X86、ARM32常量引用分析。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.zynamics.com/bindiff.html" target="_blank" rel="noopener">bindiff项目</a><br><a href="https://github.com/CheckPointSW/Karta" target="_blank" rel="noopener">KARTA项目开源地址</a><br><a href="https://blog.quarkslab.com/binmap-a-system-scanner.html" target="_blank" rel="noopener">Binmap项目</a><br><a href="https://lief.quarkslab.com/" target="_blank" rel="noopener">LIEF项目</a><br><a href="https://sourceware.org/libabigail/manual/abidiff.html" target="_blank" rel="noopener">libabigail:Abidiff使用说明</a> </p>
-<h2 id="作者声明"><a href="#作者声明" class="headerlink" title="作者声明"></a><strong>作者声明</strong></h2><pre><code>本文版权归作者所有，旨在技术交流使用。未经作者同意禁止转载，转载后需在文章页面明显位置给出原文连接，否则相关责任自行承担。
+<h2 id="作者声明"><a href="#作者声明" class="headerlink" title="作者声明"></a><strong>作者声明</strong></h2><pre><code>本文版权归作者(rohex)所有，旨在技术交流使用。未经作者同意禁止转载，转载后需在文章页面明显位置给出原文连接，否则相关责任自行承担。
 </code></pre>
                 
                 <hr>
